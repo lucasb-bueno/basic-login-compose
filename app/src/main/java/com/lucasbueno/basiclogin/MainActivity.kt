@@ -112,7 +112,7 @@ class MainActivity : ComponentActivity() {
                                             email,
                                             password
                                         )
-                                        result?.let {
+                                        result.let {
                                             viewModel.onSignInResult(it)
                                         }
                                     }
