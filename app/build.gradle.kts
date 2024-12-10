@@ -73,4 +73,5 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.material.icons.extended)
 }

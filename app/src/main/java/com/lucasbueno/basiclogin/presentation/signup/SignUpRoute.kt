@@ -8,11 +8,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun SignUpRoute(
     onSignUpClick: (String, String) -> Unit,
+    onBackClick: () -> Unit
 ) {
     val viewModel: SignUpViewModel = viewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     SignUpScreen(
-        onSignUpClick = onSignUpClick
+        onSignUpClick = onSignUpClick,
+        onBackClick = onBackClick
     )
 }

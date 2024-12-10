@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -24,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.domain.DataState
 import com.lucasbueno.basiclogin.presentation.signin.LogInState
 
@@ -104,28 +107,27 @@ fun ScreenContent(
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            Button(
+            DefaultButton(
+                text = "Sign in with Email",
                 onClick = { onSignInWithEmailAndPasswordClick(email, password) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Sign in with Email")
-            }
+                modifier = Modifier.fillMaxWidth(),
+                icon = Icons.Default.Email
+            )
 
-            Button(
+            DefaultButton(
+                text = "Create an Account",
                 onClick = onCreateAccountClick,
                 modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Create an Account")
-            }
+            )
 
             Text(text = "OR", style = MaterialTheme.typography.bodyLarge)
 
-            Button(
+            DefaultButton(
+                text = "Sign in with Google",
                 onClick = onSignInWithGoogleClick,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "Sign in with Google")
-            }
+                modifier = Modifier.fillMaxWidth(),
+                icon = Icons.Default.Android
+            )
         }
     }
 }

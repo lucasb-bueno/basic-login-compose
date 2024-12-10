@@ -4,37 +4,28 @@ import com.google.firebase.auth.FirebaseAuth
 import com.lucasbueno.basiclogin.domain.AuthProvider
 import com.lucasbueno.basiclogin.domain.DataState
 import com.lucasbueno.basiclogin.presentation.signin.LogInState
-import com.lucasbueno.basiclogin.presentation.signin.UserData
+import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthClient : AuthProvider {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    override suspend fun login(email: String?, password: String?): DataState<LogInState>? {
-        var result: DataState<LogInState>? = null
-
+    override suspend fun login(email: String?, password: String?): DataState<LogInState> {
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
             return DataState.Error(message = "Email and password cannot be empty")
         }
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result = DataState.Success(
-                        data = LogInState(
-                            userData = UserData(
-                                userId = auth.currentUser?.uid.orEmpty(),
-                                username = auth.currentUser?.displayName,
-                                profilePictureUrl = auth.currentUser?.photoUrl?.toString()
-                            )
-                        )
-                    )
-                } else {
-                    result = DataState.Error(
-                        message = task.exception?.localizedMessage.orEmpty()
-                    )
-                }
-            }
-        return result
+        return try {
+            auth.signInWithEmailAndPassword(email, password).await()
+            DataState.Success(
+                data = LogInState(
+                    userData = null
+                )
+            )
+        } catch (e: Exception) {
+            DataState.Error(
+                message = e.localizedMessage.orEmpty()
+            )
+        }
     }
 
     override suspend fun logout() {
@@ -57,6 +48,6 @@ class FirebaseAuthClient : AuthProvider {
                 } else {
                     onResult(false, task.exception?.localizedMessage.orEmpty())
                 }
-            }
+            }.await()
     }
 }

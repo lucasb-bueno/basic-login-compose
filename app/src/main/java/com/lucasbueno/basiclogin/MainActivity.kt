@@ -159,7 +159,8 @@ class MainActivity : ComponentActivity() {
                                             }
                                         )
                                     }
-                                }
+                                },
+                                onBackClick = { navController.navigateUp() }
                             )
                         }
                     }
