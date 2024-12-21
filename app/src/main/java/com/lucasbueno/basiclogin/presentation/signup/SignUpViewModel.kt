@@ -27,7 +27,3 @@ class SignUpViewModel: ViewModel() {
         }
     }
 }
-
-data class SignUpState(
-    val error: String
-)

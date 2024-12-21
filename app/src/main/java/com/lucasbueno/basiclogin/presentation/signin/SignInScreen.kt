@@ -43,16 +43,6 @@ fun SignInScreen(
 }
 
 @Composable
-fun ErrorScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "An error occurred. Please try again later.")
-    }
-}
-
-@Composable
 fun ScreenContent(
     uiState: DataState<LogInState>,
     onSignInWithGoogleClick: () -> Unit,
