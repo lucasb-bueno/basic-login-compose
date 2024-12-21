@@ -24,7 +24,7 @@ import com.lucasbueno.basiclogin.ui.theme.BasicLoginTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class BasicLoginActivity : ComponentActivity() {
 
     private val googleAuthUiClient by lazy {
         GoogleAuthUiClient(
