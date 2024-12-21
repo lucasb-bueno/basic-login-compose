@@ -5,16 +5,23 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+const val signUpRoute = "signUpRoute"
+
 @Composable
 fun SignUpRoute(
-    onSignUpClick: (String, String) -> Unit,
+    authProvider: FirebaseAuthClient,
+    onSignUpSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
     val viewModel: SignUpViewModel = viewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     SignUpScreen(
-        onSignUpClick = onSignUpClick,
-        onBackClick = onBackClick
+        signUpState = state,
+        onSignUpClick = { email, password ->
+            viewModel.registerUser(email = email, password = password, authClient = authProvider)
+        },
+        onBackClick = onBackClick,
+        onSuccessRegister = onSignUpSuccess
     )
 }

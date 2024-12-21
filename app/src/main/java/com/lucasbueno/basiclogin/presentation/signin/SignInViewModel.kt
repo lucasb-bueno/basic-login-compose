@@ -2,6 +2,7 @@ package com.lucasbueno.basiclogin.presentation.signin
 
 import androidx.lifecycle.ViewModel
 import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.domain.model.UserData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -19,12 +20,6 @@ class SignInViewModel: ViewModel() {
         _state.update { DataState.Loading }
     }
 }
-
-data class UserData(
-    val userId: String,
-    val username: String?,
-    val profilePictureUrl: String?
-)
 
 data class LogInState(
     val userData: UserData? = null,

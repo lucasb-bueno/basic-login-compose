@@ -11,13 +11,15 @@ import com.google.firebase.auth.auth
 import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.domain.AuthProvider
 import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.domain.model.UserData
+import com.lucasbueno.basiclogin.presentation.profile.ProfileState
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.cancellation.CancellationException
 
 class GoogleAuthUiClient(
     private val context: Context,
     private val googleSignInClient: SignInClient
-): AuthProvider {
+) : AuthProvider {
     private val auth = Firebase.auth
 
     override suspend fun login(email: String?, password: String?): DataState<LogInState> {
@@ -29,9 +31,9 @@ class GoogleAuthUiClient(
             googleSignInClient.beginSignIn(
                 buildSignInRequest()
             ).await()
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
-            if(e is CancellationException) throw e
+            if (e is CancellationException) throw e
             null
         }
         return result?.pendingIntent?.intentSender
@@ -52,29 +54,34 @@ class GoogleAuthUiClient(
                     )
                 )
             })
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
-            if(e is CancellationException) throw e
+            if (e is CancellationException) throw e
             DataState.Error(message = e.message.orEmpty())
         }
     }
 
-    override suspend fun logout() {
-        try {
+    override suspend fun logout(): Result<Unit> {
+        return runCatching {
             googleSignInClient.signOut().await()
             auth.signOut()
-        } catch(e: Exception) {
-            e.printStackTrace()
-            if(e is CancellationException) throw e
+        }.onFailure { e ->
+            if (e is CancellationException) throw e // Rethrow cancellation exceptions
         }
     }
 
-    fun getSignedInUser(): UserData? = auth.currentUser?.run {
-        UserData(
-            userId = uid,
-            username = displayName,
-            profilePictureUrl = photoUrl?.toString()
-        )
+    fun getSignedInUser(): DataState<ProfileState> {
+        return auth.currentUser?.run {
+            DataState.Success(
+                data = ProfileState(
+                    userData = UserData(
+                        userId = uid,
+                        username = displayName,
+                        profilePictureUrl = photoUrl?.toString()
+                    )
+                )
+            )
+        } ?: DataState.Error(message = "Not able to get user data")
     }
 
     override suspend fun isUserLoggedIn(): Boolean {

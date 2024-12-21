@@ -5,6 +5,7 @@ import com.lucasbueno.basiclogin.domain.AuthProvider
 import com.lucasbueno.basiclogin.domain.DataState
 import com.lucasbueno.basiclogin.presentation.signin.LogInState
 import kotlinx.coroutines.tasks.await
+import kotlin.coroutines.cancellation.CancellationException
 
 class FirebaseAuthClient : AuthProvider {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -28,8 +29,12 @@ class FirebaseAuthClient : AuthProvider {
         }
     }
 
-    override suspend fun logout() {
-        auth.signOut()
+    override suspend fun logout(): Result<Unit> {
+        return runCatching {
+            auth.signOut()
+        }.onFailure { e ->
+            if (e is CancellationException) throw e // Rethrow cancellation exceptions
+        }
     }
 
     override suspend fun isUserLoggedIn(): Boolean {
@@ -38,16 +43,13 @@ class FirebaseAuthClient : AuthProvider {
 
     suspend fun registerUser(
         email: String,
-        password: String,
-        onResult: (Boolean, String?) -> Unit
-    ) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onResult(true, null)
-                } else {
-                    onResult(false, task.exception?.localizedMessage.orEmpty())
-                }
-            }.await()
+        password: String
+    ): DataState<Boolean> {
+        return try {
+            auth.createUserWithEmailAndPassword(email, password).await()
+            DataState.Success(true)
+        } catch (e: Exception) {
+            DataState.Error(message = e.localizedMessage.orEmpty())
+        }
     }
 }

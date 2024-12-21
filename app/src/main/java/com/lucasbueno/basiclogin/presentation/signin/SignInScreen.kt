@@ -1,4 +1,3 @@
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,7 +20,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -37,19 +34,8 @@ fun SignInScreen(
     onSignInWithEmailAndPasswordClick: (String, String) -> Unit,
     onCreateAccountClick: () -> Unit
 ) {
-    val context = LocalContext.current
-
-    LaunchedEffect(key1 = state) {
-        if (state is DataState.Error) {
-            Toast.makeText(
-                context,
-                state.message,
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
     ScreenContent(
+        uiState = state,
         onSignInWithGoogleClick = onSignInWithGoogleClick,
         onSignInWithEmailAndPasswordClick = onSignInWithEmailAndPasswordClick,
         onCreateAccountClick = onCreateAccountClick
@@ -68,6 +54,7 @@ fun ErrorScreen() {
 
 @Composable
 fun ScreenContent(
+    uiState: DataState<LogInState>,
     onSignInWithGoogleClick: () -> Unit,
     onSignInWithEmailAndPasswordClick: (String, String) -> Unit,
     onCreateAccountClick: () -> Unit
@@ -106,6 +93,17 @@ fun ScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
+
+            if (uiState is DataState.Error) {
+                Box(modifier = Modifier.padding(vertical = 4.dp)) {
+                    Text(
+                        text = uiState.message,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                    )
+                }
+            }
 
             DefaultButton(
                 text = "Sign in with Email",
