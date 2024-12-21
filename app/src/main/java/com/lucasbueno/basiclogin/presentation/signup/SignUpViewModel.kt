@@ -3,6 +3,7 @@ package com.lucasbueno.basiclogin.presentation.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.domain.DatabaseService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor() : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val databaseService: DatabaseService
+) : ViewModel() {
     private val _state = MutableStateFlow<DataState<Boolean>>(DataState.Success(false))
     val state = _state.asStateFlow()
 
