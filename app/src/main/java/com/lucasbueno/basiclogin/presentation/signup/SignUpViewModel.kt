@@ -21,8 +21,7 @@ class SignUpViewModel: ViewModel() {
                 is DataState.Error -> {
                     _state.value = DataState.Error(result.message)
                 }
-
-                else -> {}
+                else -> Unit
             }
         }
     }

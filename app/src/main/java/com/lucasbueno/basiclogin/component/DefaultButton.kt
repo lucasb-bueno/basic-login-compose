@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,10 +26,11 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DefaultButton(
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    icon: ImageVector? = null,
+    icon: ImageVector? = null
 ) {
     Button(
         onClick = onClick,
@@ -45,19 +47,24 @@ fun DefaultButton(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            if (icon != null) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                    tint = Color.Black
-                )
-                Spacer(modifier = Modifier.width(8.dp))
+            if (isLoading) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp), strokeWidth = 3.dp)
             }
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
-            )
+            else {
+                if (icon != null) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp),
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
+                )
+            }
         }
     }
 }
@@ -76,6 +83,16 @@ private fun DefaultButtonPreview() {
 @Composable
 private fun DefaultButtonNoIconPreview() {
     DefaultButton(
+        text = "Sign in with Google",
+        onClick = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DefaultButtonLoadingPreview() {
+    DefaultButton(
+        isLoading = true,
         text = "Sign in with Google",
         onClick = {}
     )

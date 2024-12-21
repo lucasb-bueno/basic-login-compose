@@ -46,6 +46,7 @@ fun ProfileScreen(
         }
         is DataState.Error -> ErrorScreen(message = profileState.message)
         is DataState.Loading -> LoadingScreen()
+        is DataState.Default -> Unit
     }
 }
 

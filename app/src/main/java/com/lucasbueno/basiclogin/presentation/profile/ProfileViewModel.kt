@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ProfileViewModel: ViewModel() {
-    private val _state = MutableStateFlow<DataState<ProfileState>>(DataState.Loading)
-    val state = _state.asStateFlow()
+    private val _profileState = MutableStateFlow<DataState<ProfileState>>(DataState.Loading)
+    val profileState = _profileState.asStateFlow()
 
     fun onProfileResult(result: DataState<ProfileState>) {
-        _state.value = result
+        _profileState.value = result
     }
 
     fun logout(googleAuthUiClient: GoogleAuthUiClient) {
@@ -23,7 +23,7 @@ class ProfileViewModel: ViewModel() {
             val result = googleAuthUiClient.logout()
             result.fold(
                 onSuccess = {
-                    _state.update {
+                    _profileState.update {
                         DataState.Success(data = ProfileState(shouldLogOut = true))
                     }
                 },

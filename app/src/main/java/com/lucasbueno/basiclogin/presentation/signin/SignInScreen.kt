@@ -52,6 +52,7 @@ fun ScreenContent(
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
+    val isLoading = uiState is DataState.Loading
 
     Box(
         modifier = Modifier
@@ -96,9 +97,15 @@ fun ScreenContent(
             }
 
             DefaultButton(
-                text = "Sign in with Email",
-                onClick = { onSignInWithEmailAndPasswordClick(email, password) },
                 modifier = Modifier.fillMaxWidth(),
+                isLoading = isLoading,
+                text = "Sign in with Email",
+                onClick = {
+                    onSignInWithEmailAndPasswordClick(email, password)
+                    email = ""
+                    password = ""
+                    focusManager.clearFocus()
+                },
                 icon = Icons.Default.Email
             )
 

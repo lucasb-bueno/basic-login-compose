@@ -69,10 +69,7 @@ fun SignInRoute(
             }
         },
         onSignInWithEmailAndPasswordClick = { email, password ->
-            coroutineScope.launch {
-                val result = authProvider.login(email, password)
-                result?.let { viewModel.onSignInResult(it) }
-            }
+            viewModel.login(authProvider = authProvider, email = email, password = password)
         },
         onCreateAccountClick = {
             navController.navigate(signUpRoute)
