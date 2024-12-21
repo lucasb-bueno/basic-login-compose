@@ -3,11 +3,14 @@ package com.lucasbueno.basiclogin.presentation.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.domain.DataState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignUpViewModel: ViewModel() {
+@HiltViewModel
+class SignUpViewModel @Inject constructor() : ViewModel() {
     private val _state = MutableStateFlow<DataState<Boolean>>(DataState.Success(false))
     val state = _state.asStateFlow()
 
@@ -18,9 +21,11 @@ class SignUpViewModel: ViewModel() {
                 is DataState.Success -> {
                     _state.value = DataState.Success(true)
                 }
+
                 is DataState.Error -> {
                     _state.value = DataState.Error(result.message)
                 }
+
                 else -> Unit
             }
         }

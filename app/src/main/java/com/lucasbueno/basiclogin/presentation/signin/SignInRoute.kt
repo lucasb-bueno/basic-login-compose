@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.lucasbueno.basiclogin.domain.AuthProvider
 import com.lucasbueno.basiclogin.domain.DataState
@@ -26,7 +26,7 @@ fun SignInRoute(
     googleAuthUiClient: GoogleAuthUiClient,
     authProvider: AuthProvider,
 ) {
-    val viewModel: SignInViewModel = viewModel()
+    val viewModel: SignInViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val coroutineScope = rememberCoroutineScope()

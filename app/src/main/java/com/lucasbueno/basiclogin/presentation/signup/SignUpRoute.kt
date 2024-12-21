@@ -2,8 +2,8 @@ package com.lucasbueno.basiclogin.presentation.signup
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 const val signUpRoute = "signUpRoute"
 
@@ -13,7 +13,7 @@ fun SignUpRoute(
     onSignUpSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
-    val viewModel: SignUpViewModel = viewModel()
+    val viewModel: SignUpViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     SignUpScreen(

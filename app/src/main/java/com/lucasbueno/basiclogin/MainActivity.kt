@@ -21,7 +21,9 @@ import com.lucasbueno.basiclogin.presentation.signup.FirebaseAuthClient
 import com.lucasbueno.basiclogin.presentation.signup.SignUpRoute
 import com.lucasbueno.basiclogin.presentation.signup.signUpRoute
 import com.lucasbueno.basiclogin.ui.theme.BasicLoginTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val googleAuthUiClient by lazy {

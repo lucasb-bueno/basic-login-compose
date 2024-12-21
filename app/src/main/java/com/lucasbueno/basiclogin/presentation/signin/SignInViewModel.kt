@@ -5,12 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.domain.AuthProvider
 import com.lucasbueno.basiclogin.domain.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignInViewModel: ViewModel() {
+@HiltViewModel
+class SignInViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow<DataState<LogInState>>(DataState.Default)
     val state = _state.asStateFlow()
