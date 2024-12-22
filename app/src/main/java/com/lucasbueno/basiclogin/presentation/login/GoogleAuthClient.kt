@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.presentation.signin
+package com.lucasbueno.basiclogin.presentation.login
 
 import android.content.Context
 import android.content.Intent

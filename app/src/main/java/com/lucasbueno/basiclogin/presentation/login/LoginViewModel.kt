@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.presentation.signin
+package com.lucasbueno.basiclogin.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor() : ViewModel() {
 
     private val _state = MutableStateFlow<DataState<LogInState>>(DataState.Default)
     val state = _state.asStateFlow()

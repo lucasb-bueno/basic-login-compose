@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
 import com.lucasbueno.basiclogin.domain.repository.UserRepository
-import com.lucasbueno.basiclogin.presentation.signin.GoogleAuthUiClient
+import com.lucasbueno.basiclogin.presentation.login.GoogleAuthUiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

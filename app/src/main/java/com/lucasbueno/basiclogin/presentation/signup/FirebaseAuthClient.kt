@@ -3,7 +3,7 @@ package com.lucasbueno.basiclogin.presentation.signup
 import com.google.firebase.auth.FirebaseAuth
 import com.lucasbueno.basiclogin.core.AuthProvider
 import com.lucasbueno.basiclogin.core.DataState
-import com.lucasbueno.basiclogin.presentation.signin.LogInState
+import com.lucasbueno.basiclogin.presentation.login.LogInState
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.cancellation.CancellationException
 

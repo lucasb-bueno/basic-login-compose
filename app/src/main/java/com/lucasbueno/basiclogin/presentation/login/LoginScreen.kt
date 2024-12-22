@@ -25,19 +25,19 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.core.DataState
-import com.lucasbueno.basiclogin.presentation.signin.LogInState
+import com.lucasbueno.basiclogin.presentation.login.LogInState
 
 @Composable
-fun SignInScreen(
+fun LoginScreen(
     state: DataState<LogInState>,
-    onSignInWithGoogleClick: () -> Unit,
-    onSignInWithEmailAndPasswordClick: (String, String) -> Unit,
+    onLoginWithGoogleClick: () -> Unit,
+    onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
     onCreateAccountClick: () -> Unit
 ) {
     ScreenContent(
         uiState = state,
-        onSignInWithGoogleClick = onSignInWithGoogleClick,
-        onSignInWithEmailAndPasswordClick = onSignInWithEmailAndPasswordClick,
+        onLoginWithGoogleClick = onLoginWithGoogleClick,
+        onLoginWithEmailAndPasswordClick = onLoginWithEmailAndPasswordClick,
         onCreateAccountClick = onCreateAccountClick
     )
 }
@@ -45,8 +45,8 @@ fun SignInScreen(
 @Composable
 fun ScreenContent(
     uiState: DataState<LogInState>,
-    onSignInWithGoogleClick: () -> Unit,
-    onSignInWithEmailAndPasswordClick: (String, String) -> Unit,
+    onLoginWithGoogleClick: () -> Unit,
+    onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
     onCreateAccountClick: () -> Unit
 ) {
     var email by rememberSaveable { mutableStateOf("") }
@@ -101,7 +101,7 @@ fun ScreenContent(
                 isLoading = isLoading,
                 text = "Sign in with Email",
                 onClick = {
-                    onSignInWithEmailAndPasswordClick(email, password)
+                    onLoginWithEmailAndPasswordClick(email, password)
                     email = ""
                     password = ""
                     focusManager.clearFocus()
@@ -119,7 +119,7 @@ fun ScreenContent(
 
             DefaultButton(
                 text = "Sign in with Google",
-                onClick = onSignInWithGoogleClick,
+                onClick = onLoginWithGoogleClick,
                 modifier = Modifier.fillMaxWidth(),
                 icon = Icons.Default.Android
             )

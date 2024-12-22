@@ -14,9 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
 import com.lucasbueno.basiclogin.presentation.profile.ProfileScreenRoute
 import com.lucasbueno.basiclogin.presentation.profile.profileScreenRoute
-import com.lucasbueno.basiclogin.presentation.signin.GoogleAuthUiClient
-import com.lucasbueno.basiclogin.presentation.signin.SignInRoute
-import com.lucasbueno.basiclogin.presentation.signin.signInRoute
+import com.lucasbueno.basiclogin.presentation.login.GoogleAuthUiClient
+import com.lucasbueno.basiclogin.presentation.login.SignInRoute
+import com.lucasbueno.basiclogin.presentation.login.signInRoute
 import com.lucasbueno.basiclogin.presentation.signup.FirebaseAuthClient
 import com.lucasbueno.basiclogin.presentation.signup.SignUpRoute
 import com.lucasbueno.basiclogin.presentation.signup.signUpRoute

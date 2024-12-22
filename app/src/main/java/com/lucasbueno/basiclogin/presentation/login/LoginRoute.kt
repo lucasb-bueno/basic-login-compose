@@ -1,6 +1,6 @@
-package com.lucasbueno.basiclogin.presentation.signin
+package com.lucasbueno.basiclogin.presentation.login
 
-import SignInScreen
+import LoginScreen
 import android.app.Activity.RESULT_OK
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -26,7 +26,7 @@ fun SignInRoute(
     googleAuthUiClient: GoogleAuthUiClient,
     authProvider: AuthProvider,
 ) {
-    val viewModel: SignInViewModel = hiltViewModel()
+    val viewModel: LoginViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val coroutineScope = rememberCoroutineScope()
@@ -58,9 +58,9 @@ fun SignInRoute(
         }
     }
 
-    SignInScreen(
+    LoginScreen(
         state = state,
-        onSignInWithGoogleClick = {
+        onLoginWithGoogleClick = {
             coroutineScope.launch {
                 val signInIntentSender = googleAuthUiClient.loginWithGoogle()
                 launcher.launch(
@@ -68,7 +68,7 @@ fun SignInRoute(
                 )
             }
         },
-        onSignInWithEmailAndPasswordClick = { email, password ->
+        onLoginWithEmailAndPasswordClick = { email, password ->
             viewModel.login(authProvider = authProvider, email = email, password = password)
         },
         onCreateAccountClick = {

@@ -1,6 +1,6 @@
 package com.lucasbueno.basiclogin.core
 
-import com.lucasbueno.basiclogin.presentation.signin.LogInState
+import com.lucasbueno.basiclogin.presentation.login.LogInState
 
 interface AuthProvider {
     suspend fun login(email: String?, password: String?): DataState<LogInState>?
