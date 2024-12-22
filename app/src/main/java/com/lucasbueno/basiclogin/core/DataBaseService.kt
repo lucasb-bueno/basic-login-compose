@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.domain
+package com.lucasbueno.basiclogin.core
 
 interface DatabaseService {
     suspend fun <T> addDocument(collection: String, data: T): Result<String>

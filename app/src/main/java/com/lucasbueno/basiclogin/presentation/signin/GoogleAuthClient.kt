@@ -9,8 +9,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.lucasbueno.basiclogin.R
-import com.lucasbueno.basiclogin.domain.AuthProvider
-import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.core.AuthProvider
+import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
 import com.lucasbueno.basiclogin.presentation.profile.ProfileState
 import kotlinx.coroutines.tasks.await
@@ -49,7 +49,8 @@ class GoogleAuthUiClient(
                 LogInState(
                     userData = UserData(
                         userId = uid,
-                        username = displayName,
+                        email = email.toString(),
+                        userName = displayName,
                         profilePictureUrl = photoUrl?.toString()
                     )
                 )
@@ -76,7 +77,8 @@ class GoogleAuthUiClient(
                 data = ProfileState(
                     userData = UserData(
                         userId = uid,
-                        username = displayName,
+                        email = email.toString(),
+                        userName = displayName,
                         profilePictureUrl = photoUrl?.toString()
                     )
                 )

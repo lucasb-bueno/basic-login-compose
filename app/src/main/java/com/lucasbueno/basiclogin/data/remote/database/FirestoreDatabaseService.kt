@@ -1,7 +1,7 @@
 package com.lucasbueno.basiclogin.data.remote.database
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.lucasbueno.basiclogin.domain.DatabaseService
+import com.lucasbueno.basiclogin.core.DatabaseService
 import kotlinx.coroutines.tasks.await
 
 class FirestoreDatabaseService : DatabaseService {

@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.domain
+package com.lucasbueno.basiclogin.core
 
 sealed interface DataState<out T> {
     data object Default : DataState<Nothing>

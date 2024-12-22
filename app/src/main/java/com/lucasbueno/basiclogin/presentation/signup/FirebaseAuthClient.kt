@@ -1,8 +1,8 @@
 package com.lucasbueno.basiclogin.presentation.signup
 
 import com.google.firebase.auth.FirebaseAuth
-import com.lucasbueno.basiclogin.domain.AuthProvider
-import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.core.AuthProvider
+import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.signin.LogInState
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.cancellation.CancellationException
@@ -44,12 +44,12 @@ class FirebaseAuthClient : AuthProvider {
     suspend fun registerUser(
         email: String,
         password: String
-    ): DataState<Boolean> {
+    ): Result<String?> {
         return try {
-            auth.createUserWithEmailAndPassword(email, password).await()
-            DataState.Success(true)
+            val result = auth.createUserWithEmailAndPassword(email, password).await()
+            Result.success(result.user?.uid)
         } catch (e: Exception) {
-            DataState.Error(message = e.localizedMessage.orEmpty())
+            Result.failure(exception = e)
         }
     }
 }

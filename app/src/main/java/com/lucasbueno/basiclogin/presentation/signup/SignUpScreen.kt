@@ -29,19 +29,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.component.LoginTopBar
-import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.core.DataState
+import com.lucasbueno.basiclogin.domain.model.SignUpModel
 
 @Composable
 fun SignUpScreen(
     signUpState: DataState<Boolean>,
     modifier: Modifier = Modifier,
-    onSignUpClick: (String, String) -> Unit,
+    onSignUpClick: (SignUpModel) -> Unit,
     onSuccessRegister: () -> Unit,
     onBackClick: () -> Unit
 ) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var username by rememberSaveable { mutableStateOf("") }
+
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(key1 = signUpState) {
@@ -96,7 +98,11 @@ fun SignUpScreen(
                     .padding(bottom = 8.dp)
             )
 
-            if (signUpState is DataState.Error && signUpState.message.contains("email", ignoreCase = true)) {
+            if (signUpState is DataState.Error && signUpState.message.contains(
+                    "email",
+                    ignoreCase = true
+                )
+            ) {
                 Box(modifier = Modifier.padding(vertical = 4.dp)) {
                     Text(
                         text = signUpState.message,
@@ -117,7 +123,11 @@ fun SignUpScreen(
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            if (signUpState is DataState.Error && signUpState.message.contains("password", ignoreCase = true)) {
+            if (signUpState is DataState.Error && signUpState.message.contains(
+                    "password",
+                    ignoreCase = true
+                )
+            ) {
                 Box(modifier = Modifier.padding(vertical = 4.dp)) {
                     Text(
                         text = signUpState.message,
@@ -131,12 +141,22 @@ fun SignUpScreen(
             DefaultButton(
                 text = "Create Account",
                 onClick = {
-                    onSignUpClick(email, password)
+                    onSignUpClick(
+                        SignUpModel(
+                            email = email,
+                            password = password,
+                            userName = username
+                        )
+                    )
                 },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (signUpState is DataState.Error && !signUpState.message.contains("email", ignoreCase = true) && !signUpState.message.contains("password", ignoreCase = true)) {
+            if (signUpState is DataState.Error && !signUpState.message.contains(
+                    "email",
+                    ignoreCase = true
+                ) && !signUpState.message.contains("password", ignoreCase = true)
+            ) {
                 Box(modifier = Modifier.padding(vertical = 4.dp)) {
                     Text(
                         text = signUpState.message,

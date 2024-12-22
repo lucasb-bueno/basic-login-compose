@@ -14,12 +14,12 @@ fun SignUpRoute(
     onBackClick: () -> Unit
 ) {
     val viewModel: SignUpViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val signUpState by viewModel.state.collectAsStateWithLifecycle()
 
     SignUpScreen(
-        signUpState = state,
-        onSignUpClick = { email, password ->
-            viewModel.registerUser(email = email, password = password, authClient = authProvider)
+        signUpState = signUpState,
+        onSignUpClick = { signUpModel ->
+            viewModel.registerUser(signUpModel = signUpModel, authClient = authProvider)
         },
         onBackClick = onBackClick,
         onSuccessRegister = onSignUpSuccess

@@ -2,8 +2,8 @@ package com.lucasbueno.basiclogin.presentation.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lucasbueno.basiclogin.domain.AuthProvider
-import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.core.AuthProvider
+import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

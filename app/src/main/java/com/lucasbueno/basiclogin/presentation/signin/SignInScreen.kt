@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.component.DefaultButton
-import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.signin.LogInState
 
 @Composable

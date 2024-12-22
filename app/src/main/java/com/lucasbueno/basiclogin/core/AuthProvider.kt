@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.domain
+package com.lucasbueno.basiclogin.core
 
 import com.lucasbueno.basiclogin.presentation.signin.LogInState
 

@@ -12,8 +12,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.lucasbueno.basiclogin.domain.AuthProvider
-import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.core.AuthProvider
+import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.profile.profileScreenRoute
 import com.lucasbueno.basiclogin.presentation.signup.signUpRoute
 import kotlinx.coroutines.launch

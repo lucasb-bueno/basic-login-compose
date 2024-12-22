@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.lucasbueno.basiclogin.domain.DataState
+import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
 
 @Composable
@@ -84,9 +84,9 @@ private fun Content(userData: UserData, onSignOut: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
-        if(userData.username != null) {
+        if(userData.userName != null) {
             Text(
-                text = userData.username,
+                text = userData.userName,
                 textAlign = TextAlign.Center,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.SemiBold
