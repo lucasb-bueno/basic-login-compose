@@ -32,7 +32,8 @@ fun ProfileScreen(
     profileState: DataState<ProfileState>,
     onSignOutClick: () -> Unit,
     onLogoutSuccess: () -> Unit,
-    onRetryClick: () -> Unit
+    onRetryClick: () -> Unit,
+    onLogoutClick: () -> Unit
 ) {
     LaunchedEffect(key1 = profileState) {
         if (profileState is DataState.Success && profileState.data?.shouldLogOut == true) {
@@ -49,7 +50,8 @@ fun ProfileScreen(
 
         is DataState.Error -> ErrorScreen(
             message = profileState.message,
-            onRetryClick = onRetryClick
+            onRetryClick = onRetryClick,
+            onLogoutClick = onLogoutClick
         )
 
         is DataState.Loading -> LoadingScreen()
@@ -65,15 +67,27 @@ private fun LoadingScreen() {
 }
 
 @Composable
-private fun ErrorScreen(message: String, onRetryClick: () -> Unit) {
+private fun ErrorScreen(message: String, onRetryClick: () -> Unit, onLogoutClick: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = message)
 
-        DefaultButton(text = "Retry", onClick = onRetryClick)
+        DefaultButton(
+            modifier = Modifier.padding(bottom = 8.dp),
+            text = "Retry",
+            onClick = onRetryClick
+        )
+
+        DefaultButton(
+            modifier = Modifier.padding(bottom = 8.dp),
+            text = "Logout",
+            onClick = onLogoutClick
+        )
     }
 }
 

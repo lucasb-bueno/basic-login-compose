@@ -22,6 +22,7 @@ fun ProfileScreenRoute(
         onLogoutSuccess = {
             onLogoutSuccess()
         },
-        onRetryClick = viewModel::fetchData
+        onRetryClick = viewModel::fetchData,
+        onLogoutClick = { viewModel.logout(googleAuthUiClient) }
     )
 }
