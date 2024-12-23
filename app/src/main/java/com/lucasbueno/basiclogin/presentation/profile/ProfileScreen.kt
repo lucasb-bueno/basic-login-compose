@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
 
@@ -30,7 +31,8 @@ import com.lucasbueno.basiclogin.domain.model.UserData
 fun ProfileScreen(
     profileState: DataState<ProfileState>,
     onSignOutClick: () -> Unit,
-    onLogoutSuccess: () -> Unit
+    onLogoutSuccess: () -> Unit,
+    onRetryClick: () -> Unit
 ) {
     LaunchedEffect(key1 = profileState) {
         if (profileState is DataState.Success && profileState.data?.shouldLogOut == true) {
@@ -38,13 +40,18 @@ fun ProfileScreen(
         }
     }
 
-    when(profileState) {
+    when (profileState) {
         is DataState.Success -> {
             profileState.data?.userData?.let {
                 Content(userData = it, onSignOut = onSignOutClick)
             }
         }
-        is DataState.Error -> ErrorScreen(message = profileState.message)
+
+        is DataState.Error -> ErrorScreen(
+            message = profileState.message,
+            onRetryClick = onRetryClick
+        )
+
         is DataState.Loading -> LoadingScreen()
         is DataState.Default -> Unit
     }
@@ -58,9 +65,15 @@ private fun LoadingScreen() {
 }
 
 @Composable
-private fun ErrorScreen(message: String) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+private fun ErrorScreen(message: String, onRetryClick: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(text = message)
+
+        DefaultButton(text = "Retry", onClick = onRetryClick)
     }
 }
 
@@ -72,8 +85,8 @@ private fun Content(userData: UserData, onSignOut: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = userData.userId, modifier = Modifier.padding(bottom = 12.dp))
-        
-        if(userData.profilePictureUrl != null) {
+
+        if (userData.profilePictureUrl != null) {
             AsyncImage(
                 model = userData.profilePictureUrl,
                 contentDescription = "Profile picture",
@@ -84,7 +97,7 @@ private fun Content(userData: UserData, onSignOut: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
-        if(userData.userName != null) {
+        if (userData.userName != null) {
             Text(
                 text = userData.userName,
                 textAlign = TextAlign.Center,

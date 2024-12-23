@@ -6,4 +6,5 @@ interface AuthProvider {
     suspend fun login(email: String?, password: String?): DataState<LogInState>?
     suspend fun logout(): Result<Unit>
     suspend fun isUserLoggedIn(): Boolean
+    suspend fun getLoggedInUserId(): Result<String>
 }

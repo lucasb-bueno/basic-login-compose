@@ -41,6 +41,16 @@ class FirebaseAuthClient : AuthProvider {
         return auth.currentUser != null
     }
 
+    override suspend fun getLoggedInUserId(): Result<String> {
+        return try {
+            auth.currentUser?.uid?.let {
+                Result.success(it)
+            } ?: Result.failure(exception = Throwable())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     suspend fun registerUser(
         email: String,
         password: String

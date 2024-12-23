@@ -20,8 +20,8 @@ class ProfileViewModel @Inject constructor(
     private val _profileState = MutableStateFlow<DataState<ProfileState>>(DataState.Loading)
     val profileState = _profileState.asStateFlow()
 
-    fun onProfileResult(result: DataState<ProfileState>) {
-        _profileState.value = result
+    init {
+        fetchData()
     }
 
     fun logout(googleAuthUiClient: GoogleAuthUiClient) {
@@ -36,6 +36,37 @@ class ProfileViewModel @Inject constructor(
                 onFailure = { error ->
                     //TODO: Add Error Scenario
                     println("Logout failed: ${error.message}")
+                }
+            )
+        }
+    }
+
+    fun fetchData() {
+        _profileState.update { DataState.Loading }
+        viewModelScope.launch {
+            userRepository.getUserId().fold(
+                onSuccess = { id ->
+                    userRepository.getUser(id).fold(
+                        onSuccess = { userData ->
+                            _profileState.update {
+                                DataState.Success(
+                                    data = ProfileState(
+                                        userData = userData
+                                    )
+                                )
+                            }
+                        },
+                        onFailure = { error ->
+                            _profileState.update {
+                                DataState.Error(message = "Error fetching data from Firestore: ${error.localizedMessage}")
+                            }
+                        }
+                    )
+                },
+                onFailure = { error ->
+                    _profileState.update {
+                        DataState.Error(message = "Error fetching Id: ${error.localizedMessage}")
+                    }
                 }
             )
         }

@@ -15,13 +15,13 @@ fun ProfileScreenRoute(
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
     val profileState by viewModel.profileState.collectAsStateWithLifecycle()
-    viewModel.onProfileResult(googleAuthUiClient.getSignedInUser())
 
     ProfileScreen(
         profileState = profileState,
         onSignOutClick = { viewModel.logout(googleAuthUiClient) },
         onLogoutSuccess = {
             onLogoutSuccess()
-        }
+        },
+        onRetryClick = viewModel::fetchData
     )
 }
