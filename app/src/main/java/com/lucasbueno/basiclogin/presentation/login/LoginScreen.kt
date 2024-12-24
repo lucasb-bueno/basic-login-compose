@@ -37,7 +37,7 @@ fun LoginScreen(
     onSuccessLogin: () -> Unit
 ) {
     LaunchedEffect(state) {
-        if (state is DataState.Success) {
+        if (state is DataState.Success && state.data?.isLoginSuccess == true) {
             onSuccessLogin()
         }
     }
@@ -60,7 +60,10 @@ fun ScreenContent(
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
-    val isLoading = uiState is DataState.Loading
+    val isEmailSignInLoading =
+        uiState is DataState.Success && uiState.data?.emailSignInLoading == true
+    val isGoogleSignInLoading =
+        uiState is DataState.Success && uiState.data?.googleSignInLoading == true
 
     Box(
         modifier = Modifier
@@ -106,7 +109,7 @@ fun ScreenContent(
 
             DefaultButton(
                 modifier = Modifier.fillMaxWidth(),
-                isLoading = isLoading,
+                isLoading = isEmailSignInLoading,
                 text = "Sign in with Email",
                 onClick = {
                     onLoginWithEmailAndPasswordClick(email, password)
@@ -126,6 +129,7 @@ fun ScreenContent(
             Text(text = "OR", style = MaterialTheme.typography.bodyLarge)
 
             DefaultButton(
+                isLoading = isGoogleSignInLoading,
                 text = "Sign in with Google",
                 onClick = onLoginWithGoogleClick,
                 modifier = Modifier.fillMaxWidth(),

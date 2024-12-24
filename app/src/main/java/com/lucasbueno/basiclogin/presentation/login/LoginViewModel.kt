@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
 import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
-import com.lucasbueno.basiclogin.domain.model.UserData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +36,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             googleAuthUiClient.getSignedInUser().fold(
                 onSuccess = {
-                    _state.update { DataState.Success(LogInState(userData = null)) }
+                    _state.update { DataState.Success(LogInState()) }
                 },
                 onFailure = {
                     _state.update { DataState.Default }
@@ -47,7 +46,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun handleGoogleLogin() {
-        _state.update { DataState.Loading }
+        _state.update { DataState.Success(LogInState(googleSignInLoading = true)) }
         viewModelScope.launch {
             val signInIntentSender = googleAuthUiClient.loginWithGoogle()
             if (signInIntentSender != null) {
@@ -59,11 +58,11 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onGoogleLoginResult(data: Intent?) {
-        _state.update { DataState.Loading }
+        _state.update { DataState.Success(data = LogInState(googleSignInLoading = true)) }
         viewModelScope.launch {
             googleAuthUiClient.signInWithIntent(data ?: return@launch).fold(
                 onSuccess = {
-                    _state.update { DataState.Success(data = LogInState()) }
+                    _state.update { DataState.Success(LogInState(isLoginSuccess = true)) }
                 },
                 onFailure = { error ->
                     _state.update {
@@ -77,11 +76,11 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginWithEmailAndPassword(email: String, password: String) {
-        _state.update { DataState.Loading }
+        _state.update { DataState.Success(data = LogInState(emailSignInLoading = true)) }
         viewModelScope.launch {
             firebaseAuthProvider.login(email, password).fold(
                 onSuccess = {
-                    _state.update { DataState.Success(LogInState()) }
+                    _state.update { DataState.Success(LogInState(isLoginSuccess = true)) }
                 },
                 onFailure = { error ->
                     _state.update {
@@ -100,8 +99,9 @@ class LoginViewModel @Inject constructor(
 }
 
 data class LogInState(
-    val userData: UserData? = null,
-    val errorMessage: String? = null
+    val isLoginSuccess: Boolean = false,
+    val emailSignInLoading: Boolean = false,
+    val googleSignInLoading: Boolean = false
 )
 
 sealed class LoginUiEvent {
