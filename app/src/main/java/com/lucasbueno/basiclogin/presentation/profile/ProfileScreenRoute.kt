@@ -4,13 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
 
 const val profileScreenRoute = "profileScreenRoute"
 
 @Composable
 fun ProfileScreenRoute(
-    googleAuthUiClient: GoogleAuthUiClient,
     onLogoutSuccess: () -> Unit
 ) {
     val viewModel: ProfileViewModel = hiltViewModel()
@@ -18,11 +16,12 @@ fun ProfileScreenRoute(
 
     ProfileScreen(
         profileState = profileState,
-        onSignOutClick = { viewModel.logout(googleAuthUiClient) },
+        onSignOutClick = viewModel::logout,
         onLogoutSuccess = {
             onLogoutSuccess()
+            viewModel.onLogoutDone()
         },
         onRetryClick = viewModel::fetchData,
-        onLogoutClick = { viewModel.logout(googleAuthUiClient) }
+        onLogoutClick = viewModel::logout
     )
 }

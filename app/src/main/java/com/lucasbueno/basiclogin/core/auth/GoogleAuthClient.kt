@@ -68,7 +68,10 @@ class GoogleAuthUiClient(
             googleSignInClient.signOut().await()
             auth.signOut()
         }.onFailure { e ->
-            if (e is CancellationException) throw e // Rethrow cancellation exceptions
+            DataState.Error(message = e.localizedMessage ?: "Error on Logout")
+//            if (e is CancellationException) throw e
+        }.onSuccess {
+            DataState.Success(ProfileState(shouldLogOut = true))
         }
     }
 

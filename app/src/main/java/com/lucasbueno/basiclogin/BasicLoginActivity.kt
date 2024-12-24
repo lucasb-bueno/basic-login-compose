@@ -11,9 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.android.gms.auth.api.identity.Identity
-import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
-import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
 import com.lucasbueno.basiclogin.presentation.login.SignInRoute
 import com.lucasbueno.basiclogin.presentation.login.signInRoute
 import com.lucasbueno.basiclogin.presentation.profile.ProfileScreenRoute
@@ -25,17 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BasicLoginActivity : ComponentActivity() {
-
-    private val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context = applicationContext,
-            googleSignInClient = Identity.getSignInClient(applicationContext)
-        )
-    }
-
-    private val authProvider by lazy {
-        FirebaseAuthClient()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +37,16 @@ class BasicLoginActivity : ComponentActivity() {
                     NavHost(navController = navController, startDestination = signInRoute) {
                         composable(signInRoute) {
                             SignInRoute(
-                                navController = navController,
-                                googleAuthUiClient = googleAuthUiClient,
-                                authProvider = authProvider,
+                                onNavigateToProfileScreen = {
+                                    navController.navigate(profileScreenRoute)
+                                },
+                                onNavigateToSignUpScreen = {
+                                    navController.navigate(signUpRoute)
+                                }
                             )
                         }
                         composable(profileScreenRoute) {
                             ProfileScreenRoute(
-                                googleAuthUiClient = googleAuthUiClient,
                                 onLogoutSuccess = {
                                     navController.navigateUp()
                                 }
@@ -66,7 +54,6 @@ class BasicLoginActivity : ComponentActivity() {
                         }
                         composable(signUpRoute) {
                             SignUpRoute(
-                                authProvider = authProvider,
                                 onSignUpSuccess = { navController.navigate(profileScreenRoute) },
                                 onBackClick = { navController.navigateUp() }
                             )

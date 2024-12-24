@@ -15,21 +15,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authClient: FirebaseAuthClient
 ) : ViewModel() {
     private val _state = MutableStateFlow<DataState<Boolean>>(DataState.Success(false))
     val state = _state.asStateFlow()
 
     fun registerUser(
-        signUpModel: SignUpModel,
-        authClient: FirebaseAuthClient
+        signUpModel: SignUpModel
     ) {
         viewModelScope.launch {
             _state.value = DataState.Loading
             when (val result =
                 registerUserAuth(
-                    signUpModel = signUpModel,
-                    authClient = authClient
+                    signUpModel = signUpModel
                 )) {
                 is DataState.Success -> {
                     _state.value = DataState.Success(true)
@@ -45,8 +44,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private suspend fun registerUserAuth(
-        signUpModel: SignUpModel,
-        authClient: FirebaseAuthClient
+        signUpModel: SignUpModel
     ): DataState<Unit> {
         return authClient.registerUser(email = signUpModel.email, password = signUpModel.password)
             .fold(

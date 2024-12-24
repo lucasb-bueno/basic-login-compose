@@ -4,8 +4,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.lucasbueno.basiclogin.core.AuthProvider
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.login.LogInState
+import com.lucasbueno.basiclogin.presentation.profile.ProfileState
 import kotlinx.coroutines.tasks.await
-import kotlin.coroutines.cancellation.CancellationException
 
 class FirebaseAuthClient : AuthProvider {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -33,7 +33,9 @@ class FirebaseAuthClient : AuthProvider {
         return runCatching {
             auth.signOut()
         }.onFailure { e ->
-            if (e is CancellationException) throw e // Rethrow cancellation exceptions
+            DataState.Error(message = e.localizedMessage ?: "Error on Logout")
+        }.onSuccess {
+            DataState.Success(ProfileState(shouldLogOut = true))
         }
     }
 

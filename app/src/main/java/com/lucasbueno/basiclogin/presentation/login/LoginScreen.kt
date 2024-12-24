@@ -32,7 +32,7 @@ fun LoginScreen(
     state: DataState<LogInState>,
     onLoginWithGoogleClick: () -> Unit,
     onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
-    onCreateAccountClick: () -> Unit
+    onCreateAccountClick: () -> Unit,
 ) {
     ScreenContent(
         uiState = state,

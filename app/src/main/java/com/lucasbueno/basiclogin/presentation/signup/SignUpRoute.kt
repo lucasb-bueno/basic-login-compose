@@ -4,13 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
 
 const val signUpRoute = "signUpRoute"
 
 @Composable
 fun SignUpRoute(
-    authProvider: FirebaseAuthClient,
     onSignUpSuccess: () -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -20,7 +18,7 @@ fun SignUpRoute(
     SignUpScreen(
         signUpState = signUpState,
         onSignUpClick = { signUpModel ->
-            viewModel.registerUser(signUpModel = signUpModel, authClient = authProvider)
+            viewModel.registerUser(signUpModel = signUpModel)
         },
         onBackClick = onBackClick,
         onSuccessRegister = onSignUpSuccess

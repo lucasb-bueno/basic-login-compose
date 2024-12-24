@@ -3,7 +3,7 @@ package com.lucasbueno.basiclogin.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.core.DataState
-import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
+import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
 import com.lucasbueno.basiclogin.domain.model.UserData
 import com.lucasbueno.basiclogin.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authProvider: FirebaseAuthClient
 ) : ViewModel() {
     private val _profileState = MutableStateFlow<DataState<ProfileState>>(DataState.Loading)
     val profileState = _profileState.asStateFlow()
@@ -24,17 +25,22 @@ class ProfileViewModel @Inject constructor(
         fetchData()
     }
 
-    fun logout(googleAuthUiClient: GoogleAuthUiClient) {
+    fun onLogoutDone() {
+        _profileState.update {
+            DataState.Success(data = ProfileState(shouldLogOut = false))
+        }
+    }
+
+    fun logout() {
+        _profileState.update { DataState.Loading }
         viewModelScope.launch {
-            val result = googleAuthUiClient.logout()
-            result.fold(
+            authProvider.logout().fold(
                 onSuccess = {
                     _profileState.update {
                         DataState.Success(data = ProfileState(shouldLogOut = true))
                     }
                 },
                 onFailure = { error ->
-                    //TODO: Add Error Scenario
                     println("Logout failed: ${error.message}")
                 }
             )

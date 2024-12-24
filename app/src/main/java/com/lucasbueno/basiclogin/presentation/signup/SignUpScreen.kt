@@ -143,9 +143,9 @@ fun SignUpScreen(
                 onClick = {
                     onSignUpClick(
                         SignUpModel(
-                            email = email,
-                            password = password,
-                            userName = username
+                            email = email.trim(),
+                            password = password.trim(),
+                            userName = username.trim()
                         )
                     )
                 },

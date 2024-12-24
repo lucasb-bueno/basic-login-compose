@@ -100,6 +100,8 @@ private fun Content(userData: UserData, onSignOut: () -> Unit) {
     ) {
         Text(text = userData.userId, modifier = Modifier.padding(bottom = 12.dp))
 
+        Text(text = "email: ${userData.email}", modifier = Modifier.padding(bottom = 12.dp))
+
         if (userData.profilePictureUrl != null) {
             AsyncImage(
                 model = userData.profilePictureUrl,
