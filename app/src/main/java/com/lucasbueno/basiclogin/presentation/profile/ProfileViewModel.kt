@@ -50,9 +50,9 @@ class ProfileViewModel @Inject constructor(
     fun fetchData() {
         _profileState.update { DataState.Loading }
         viewModelScope.launch {
-            userRepository.getUserId().fold(
-                onSuccess = { id ->
-                    userRepository.getUser(id).fold(
+            userRepository.getSignedInUser().fold(
+                onSuccess = { user ->
+                    userRepository.getUser(user.uid).fold(
                         onSuccess = { userData ->
                             _profileState.update {
                                 DataState.Success(
@@ -63,8 +63,33 @@ class ProfileViewModel @Inject constructor(
                             }
                         },
                         onFailure = { error ->
-                            _profileState.update {
-                                DataState.Error(message = "Error fetching data from Firestore: ${error.localizedMessage}")
+                            if (error.localizedMessage == "Document not found") {
+                                val newUser = UserData(
+                                    userId = user.uid,
+                                    email = user.email.orEmpty(),
+                                    userName = user.displayName,
+                                    profilePictureUrl = user.photoUrl.toString()
+                                )
+                                userRepository.createUser(newUser).fold(
+                                    onSuccess = {
+                                        _profileState.update {
+                                            DataState.Success(
+                                                data = ProfileState(
+                                                    userData = newUser
+                                                )
+                                            )
+                                        }
+                                    },
+                                    onFailure = { createError ->
+                                        _profileState.update {
+                                            DataState.Error(message = "Error creating user: ${createError.localizedMessage}")
+                                        }
+                                    }
+                                )
+                            } else {
+                                _profileState.update {
+                                    DataState.Error(message = "Error fetching data from Firestore: ${error.localizedMessage}")
+                                }
                             }
                         }
                     )

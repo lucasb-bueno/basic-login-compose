@@ -6,6 +6,7 @@ import android.content.IntentSender
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.lucasbueno.basiclogin.R
@@ -63,9 +64,9 @@ class GoogleAuthUiClient(
         }
     }
 
-    fun getSignedInUser(): Result<Unit> {
+    override suspend fun getSignedInUser(): Result<FirebaseUser> {
         return auth.currentUser?.let {
-            Result.success(Unit)
+            Result.success(it)
         } ?: Result.failure(exception = Throwable(message = "No current user Logged in"))
     }
 

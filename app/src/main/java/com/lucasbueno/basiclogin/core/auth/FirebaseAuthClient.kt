@@ -1,6 +1,7 @@
 package com.lucasbueno.basiclogin.core.auth
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.lucasbueno.basiclogin.core.AuthProvider
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.profile.ProfileState
@@ -45,6 +46,12 @@ class FirebaseAuthClient : AuthProvider {
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    override suspend fun getSignedInUser(): Result<FirebaseUser> {
+        return auth.currentUser?.let {
+            Result.success(it)
+        } ?: Result.failure(exception = Throwable(message = "No current user Logged in"))
     }
 
     suspend fun registerUser(
