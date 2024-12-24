@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-const val signInRoute = "signInRoute"
+const val loginRoute = "loginRoute"
 
 @Composable
 fun SignInRoute(
@@ -33,8 +33,6 @@ fun SignInRoute(
     LaunchedEffect(viewModel.uiEvents) {
         viewModel.uiEvents.collect { event ->
             when (event) {
-                is LoginUiEvent.NavigateToProfile -> onNavigateToProfileScreen()
-                is LoginUiEvent.NavigateToSignUp -> onNavigateToSignUpScreen()
                 is LoginUiEvent.GoogleSignIn -> launcher.launch(
                     IntentSenderRequest.Builder(event.intentSender).build()
                 )
@@ -48,6 +46,10 @@ fun SignInRoute(
         onLoginWithEmailAndPasswordClick = { email, password ->
             viewModel.loginWithEmailAndPassword(email, password)
         },
-        onCreateAccountClick = { viewModel.onSignUpClick() }
+        onCreateAccountClick = onNavigateToSignUpScreen,
+        onSuccessLogin = {
+            onNavigateToProfileScreen()
+            viewModel.resetLoginState()
+        }
     )
 }

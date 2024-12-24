@@ -29,12 +29,28 @@ class LoginViewModel @Inject constructor(
     private val _uiEvents = MutableSharedFlow<LoginUiEvent>()
     val uiEvents = _uiEvents.asSharedFlow()
 
+    init {
+        getSignedUser()
+    }
+
+    private fun getSignedUser() {
+        viewModelScope.launch {
+            googleAuthUiClient.getSignedInUser().fold(
+                onSuccess = {
+                    _state.update { DataState.Success(LogInState(userData = null)) }
+                },
+                onFailure = {
+                    _state.update { DataState.Default }
+                }
+            )
+        }
+    }
+
     fun handleGoogleLogin() {
         _state.update { DataState.Loading }
         viewModelScope.launch {
             val signInIntentSender = googleAuthUiClient.loginWithGoogle()
             if (signInIntentSender != null) {
-                _state.update { DataState.Success(LogInState(userData = null)) }
                 _uiEvents.emit(LoginUiEvent.GoogleSignIn(signInIntentSender))
             } else {
                 _state.update { DataState.Error("Failed to get Google Sign-In intent.") }
@@ -45,32 +61,41 @@ class LoginViewModel @Inject constructor(
     fun onGoogleLoginResult(data: Intent?) {
         _state.update { DataState.Loading }
         viewModelScope.launch {
-            val logInState = googleAuthUiClient.signInWithIntent(data ?: return@launch)
-            _state.update { logInState }
-            if (logInState is DataState.Success && logInState.data?.userData != null) {
-                _uiEvents.emit(LoginUiEvent.NavigateToProfile)
-            } else if (logInState is DataState.Error) {
-                _state.update { logInState }
-            }
+            googleAuthUiClient.signInWithIntent(data ?: return@launch).fold(
+                onSuccess = {
+                    _state.update { DataState.Success(data = LogInState()) }
+                },
+                onFailure = { error ->
+                    _state.update {
+                        DataState.Error(
+                            message = error.localizedMessage ?: "Error on google Login"
+                        )
+                    }
+                }
+            )
         }
     }
 
     fun loginWithEmailAndPassword(email: String, password: String) {
         _state.update { DataState.Loading }
         viewModelScope.launch {
-            firebaseAuthProvider.login(email, password)?.let { result ->
-                if (result is DataState.Success) {
-                    _uiEvents.emit(LoginUiEvent.NavigateToProfile)
+            firebaseAuthProvider.login(email, password).fold(
+                onSuccess = {
+                    _state.update { DataState.Success(LogInState()) }
+                },
+                onFailure = { error ->
+                    _state.update {
+                        DataState.Error(
+                            message = error.localizedMessage ?: "Unknown error"
+                        )
+                    }
                 }
-                _state.update { result }
-            }
+            )
         }
     }
 
-    fun onSignUpClick() {
-        viewModelScope.launch {
-            _uiEvents.emit(LoginUiEvent.NavigateToSignUp)
-        }
+    fun resetLoginState() {
+        _state.update { DataState.Default }
     }
 }
 
@@ -80,7 +105,5 @@ data class LogInState(
 )
 
 sealed class LoginUiEvent {
-    data object NavigateToProfile : LoginUiEvent()
-    data object NavigateToSignUp : LoginUiEvent()
     data class GoogleSignIn(val intentSender: IntentSender) : LoginUiEvent()
 }

@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lucasbueno.basiclogin.presentation.login.SignInRoute
-import com.lucasbueno.basiclogin.presentation.login.signInRoute
+import com.lucasbueno.basiclogin.presentation.login.loginRoute
 import com.lucasbueno.basiclogin.presentation.profile.ProfileScreenRoute
 import com.lucasbueno.basiclogin.presentation.profile.profileScreenRoute
 import com.lucasbueno.basiclogin.presentation.signup.SignUpRoute
@@ -34,8 +34,8 @@ class BasicLoginActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = signInRoute) {
-                        composable(signInRoute) {
+                    NavHost(navController = navController, startDestination = loginRoute) {
+                        composable(loginRoute) {
                             SignInRoute(
                                 onNavigateToProfileScreen = {
                                     navController.navigate(profileScreenRoute)
@@ -48,7 +48,10 @@ class BasicLoginActivity : ComponentActivity() {
                         composable(profileScreenRoute) {
                             ProfileScreenRoute(
                                 onLogoutSuccess = {
-                                    navController.navigateUp()
+                                    navController.popBackStack(
+                                        route = loginRoute,
+                                        inclusive = false
+                                    )
                                 }
                             )
                         }

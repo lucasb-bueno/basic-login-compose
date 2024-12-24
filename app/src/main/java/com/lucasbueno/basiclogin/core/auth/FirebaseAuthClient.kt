@@ -3,29 +3,23 @@ package com.lucasbueno.basiclogin.core.auth
 import com.google.firebase.auth.FirebaseAuth
 import com.lucasbueno.basiclogin.core.AuthProvider
 import com.lucasbueno.basiclogin.core.DataState
-import com.lucasbueno.basiclogin.presentation.login.LogInState
 import com.lucasbueno.basiclogin.presentation.profile.ProfileState
 import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthClient : AuthProvider {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    override suspend fun login(email: String?, password: String?): DataState<LogInState> {
+    override suspend fun login(email: String?, password: String?): Result<Unit> {
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
-            return DataState.Error(message = "Email and password cannot be empty")
+            return Result.failure(exception = Throwable(message = "Email and password cannot be empty"))
         }
 
         return try {
-            auth.signInWithEmailAndPassword(email, password).await()
-            DataState.Success(
-                data = LogInState(
-                    userData = null
-                )
-            )
+            auth.signInWithEmailAndPassword(email, password).await()?.let {
+                Result.success(Unit)
+            } ?: Result.failure(exception = Throwable())
         } catch (e: Exception) {
-            DataState.Error(
-                message = e.localizedMessage.orEmpty()
-            )
+            Result.failure(exception = Throwable(message = e.localizedMessage.orEmpty()))
         }
     }
 

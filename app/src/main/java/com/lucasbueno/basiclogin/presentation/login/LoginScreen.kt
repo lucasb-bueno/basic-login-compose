@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,7 +34,14 @@ fun LoginScreen(
     onLoginWithGoogleClick: () -> Unit,
     onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
     onCreateAccountClick: () -> Unit,
+    onSuccessLogin: () -> Unit
 ) {
+    LaunchedEffect(state) {
+        if (state is DataState.Success) {
+            onSuccessLogin()
+        }
+    }
+
     ScreenContent(
         uiState = state,
         onLoginWithGoogleClick = onLoginWithGoogleClick,

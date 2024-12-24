@@ -29,9 +29,12 @@ object AppModule {
     @Provides
     fun provideUserRepository(
         databaseService: DatabaseService,
-        authProvider: FirebaseAuthClient
+        firebaseAuthProvider: FirebaseAuthClient
     ): UserRepository {
-        return UserRepositoryImpl(databaseService = databaseService, authProvider = authProvider)
+        return UserRepositoryImpl(
+            databaseService = databaseService,
+            authProvider = firebaseAuthProvider
+        )
     }
 
     @Provides
