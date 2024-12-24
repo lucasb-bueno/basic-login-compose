@@ -3,6 +3,7 @@ package com.lucasbueno.basiclogin.presentation.signup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.core.DataState
+import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
 import com.lucasbueno.basiclogin.domain.model.SignUpModel
 import com.lucasbueno.basiclogin.domain.model.UserData
 import com.lucasbueno.basiclogin.domain.repository.UserRepository
@@ -47,31 +48,32 @@ class SignUpViewModel @Inject constructor(
         signUpModel: SignUpModel,
         authClient: FirebaseAuthClient
     ): DataState<Unit> {
-        return authClient.registerUser(email = signUpModel.email, password = signUpModel.password).fold(
-            onSuccess = { id ->
-                if (id != null) {
-                    userRepository.createUser(
-                        user = UserData(
-                            userId = id,
-                            email = signUpModel.email,
-                            userName = signUpModel.userName,
-                            profilePictureUrl = null
+        return authClient.registerUser(email = signUpModel.email, password = signUpModel.password)
+            .fold(
+                onSuccess = { id ->
+                    if (id != null) {
+                        userRepository.createUser(
+                            user = UserData(
+                                userId = id,
+                                email = signUpModel.email,
+                                userName = signUpModel.userName,
+                                profilePictureUrl = null
+                            )
+                        ).fold(
+                            onSuccess = {
+                                DataState.Success(Unit)
+                            },
+                            onFailure = { error ->
+                                DataState.Error(message = error.message.orEmpty())
+                            }
                         )
-                    ).fold(
-                        onSuccess = {
-                            DataState.Success(Unit)
-                        },
-                        onFailure = { error ->
-                            DataState.Error(message = error.message.orEmpty())
-                        }
-                    )
-                } else {
-                    DataState.Error(message = "Error: id is Null")
+                    } else {
+                        DataState.Error(message = "Error: id is Null")
+                    }
+                },
+                onFailure = { error ->
+                    DataState.Error(message = error.localizedMessage.orEmpty())
                 }
-            },
-            onFailure = { error ->
-                DataState.Error(message = error.localizedMessage.orEmpty())
-            }
-        )
+            )
     }
 }

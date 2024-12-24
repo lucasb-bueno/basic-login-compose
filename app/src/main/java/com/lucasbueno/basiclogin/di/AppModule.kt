@@ -1,11 +1,11 @@
 package com.lucasbueno.basiclogin.di
 
 import com.lucasbueno.basiclogin.core.AuthProvider
-import com.lucasbueno.basiclogin.data.remote.database.FirestoreDatabaseService
 import com.lucasbueno.basiclogin.core.DatabaseService
+import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
+import com.lucasbueno.basiclogin.data.remote.database.FirestoreDatabaseService
 import com.lucasbueno.basiclogin.data.repository.UserRepositoryImpl
 import com.lucasbueno.basiclogin.domain.repository.UserRepository
-import com.lucasbueno.basiclogin.presentation.signup.FirebaseAuthClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
 
 const val signUpRoute = "signUpRoute"
 

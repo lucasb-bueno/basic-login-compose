@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.presentation.login
+package com.lucasbueno.basiclogin.core.auth
 
 import android.content.Context
 import android.content.Intent
@@ -12,6 +12,7 @@ import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.core.AuthProvider
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
+import com.lucasbueno.basiclogin.presentation.login.LogInState
 import com.lucasbueno.basiclogin.presentation.profile.ProfileState
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.cancellation.CancellationException

@@ -12,12 +12,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.identity.Identity
-import com.lucasbueno.basiclogin.presentation.profile.ProfileScreenRoute
-import com.lucasbueno.basiclogin.presentation.profile.profileScreenRoute
-import com.lucasbueno.basiclogin.presentation.login.GoogleAuthUiClient
+import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
+import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
 import com.lucasbueno.basiclogin.presentation.login.SignInRoute
 import com.lucasbueno.basiclogin.presentation.login.signInRoute
-import com.lucasbueno.basiclogin.presentation.signup.FirebaseAuthClient
+import com.lucasbueno.basiclogin.presentation.profile.ProfileScreenRoute
+import com.lucasbueno.basiclogin.presentation.profile.profileScreenRoute
 import com.lucasbueno.basiclogin.presentation.signup.SignUpRoute
 import com.lucasbueno.basiclogin.presentation.signup.signUpRoute
 import com.lucasbueno.basiclogin.ui.theme.BasicLoginTheme

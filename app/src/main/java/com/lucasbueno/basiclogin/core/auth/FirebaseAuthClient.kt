@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.presentation.signup
+package com.lucasbueno.basiclogin.core.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.lucasbueno.basiclogin.core.AuthProvider

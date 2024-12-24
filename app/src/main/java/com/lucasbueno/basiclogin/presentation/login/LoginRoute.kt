@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.lucasbueno.basiclogin.core.AuthProvider
 import com.lucasbueno.basiclogin.core.DataState
+import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
 import com.lucasbueno.basiclogin.presentation.profile.profileScreenRoute
 import com.lucasbueno.basiclogin.presentation.signup.signUpRoute
 import kotlinx.coroutines.launch

@@ -10,11 +10,15 @@ class FirestoreDatabaseService : DatabaseService {
     private val firestore = FirebaseFirestore.getInstance()
     private val gson = Gson()
 
-    override suspend fun <T> addDocument(collection: String, data: T): Result<String> {
+    override suspend fun <T> addDocument(
+        collection: String,
+        userId: String,
+        data: T
+    ): Result<Unit> {
         return try {
             if (data != null) {
-                val document = firestore.collection(collection).add(data).await()
-                Result.success(document.id)
+                firestore.collection(collection).document(userId).set(data).await()
+                Result.success(Unit)
             } else {
                 Result.failure(exception = Throwable())
             }
@@ -23,9 +27,14 @@ class FirestoreDatabaseService : DatabaseService {
         }
     }
 
-    override suspend fun <T> getDocument(collection: String, documentId: String, clazz: Class<T>): Result<T> {
+    override suspend fun <T> getDocument(
+        collection: String,
+        documentId: String,
+        clazz: Class<T>
+    ): Result<T> {
         return try {
-            val documentSnapshot = firestore.collection(collection).document(documentId).get().await()
+            val documentSnapshot =
+                firestore.collection(collection).document(documentId).get().await()
             if (documentSnapshot.exists()) {
                 val json = gson.toJson(documentSnapshot.data)
                 val data = gson.fromJson(json, clazz)

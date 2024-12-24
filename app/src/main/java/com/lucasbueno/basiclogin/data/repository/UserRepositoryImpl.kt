@@ -11,14 +11,18 @@ class UserRepositoryImpl(
 ) :
     UserRepository {
 
-    override suspend fun createUser(user: UserData): Result<String> {
-        return databaseService.addDocument("userProfile", user)
+    override suspend fun createUser(user: UserData): Result<Unit> {
+        return databaseService.addDocument(collection = "userProfile", userId = user.userId, data = user)
     }
 
     override suspend fun getUser(
         userId: String,
     ): Result<UserData> =
-        databaseService.getDocument(collection = "userProfile", documentId = userId, clazz = UserData::class.java)
+        databaseService.getDocument(
+            collection = "userProfile",
+            documentId = userId,
+            clazz = UserData::class.java
+        )
 
     override suspend fun getUserId(): Result<String> = authProvider.getLoggedInUserId()
 }

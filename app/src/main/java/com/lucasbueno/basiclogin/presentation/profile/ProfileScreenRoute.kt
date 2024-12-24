@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.lucasbueno.basiclogin.presentation.login.GoogleAuthUiClient
+import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
 
 const val profileScreenRoute = "profileScreenRoute"
 
