@@ -1,7 +1,6 @@
 package com.lucasbueno.basiclogin.presentation.profile
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.lucasbueno.basiclogin.component.DefaultButton
+import com.lucasbueno.basiclogin.component.DefaultErrorScreen
+import com.lucasbueno.basiclogin.component.DefaultLoadingScreen
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
 
@@ -48,46 +47,14 @@ fun ProfileScreen(
             }
         }
 
-        is DataState.Error -> ErrorScreen(
+        is DataState.Error -> DefaultErrorScreen(
             message = profileState.message,
             onRetryClick = onRetryClick,
             onLogoutClick = onLogoutClick
         )
 
-        is DataState.Loading -> LoadingScreen()
+        is DataState.Loading -> DefaultLoadingScreen()
         is DataState.Default -> Unit
-    }
-}
-
-@Composable
-private fun LoadingScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun ErrorScreen(message: String, onRetryClick: () -> Unit, onLogoutClick: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = message)
-
-        DefaultButton(
-            modifier = Modifier.padding(bottom = 8.dp),
-            text = "Retry",
-            onClick = onRetryClick
-        )
-
-        DefaultButton(
-            modifier = Modifier.padding(bottom = 8.dp),
-            text = "Logout",
-            onClick = onLogoutClick
-        )
     }
 }
 
