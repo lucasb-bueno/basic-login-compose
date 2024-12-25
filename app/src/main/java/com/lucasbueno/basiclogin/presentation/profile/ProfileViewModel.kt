@@ -3,7 +3,7 @@ package com.lucasbueno.basiclogin.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lucasbueno.basiclogin.core.DataState
-import com.lucasbueno.basiclogin.core.auth.FirebaseAuthClient
+import com.lucasbueno.basiclogin.core.auth.GoogleAuthUiClient
 import com.lucasbueno.basiclogin.domain.model.UserData
 import com.lucasbueno.basiclogin.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val authProvider: FirebaseAuthClient
+    private val authProvider: GoogleAuthUiClient
 ) : ViewModel() {
     private val _profileState = MutableStateFlow<DataState<ProfileState>>(DataState.Loading)
     val profileState = _profileState.asStateFlow()

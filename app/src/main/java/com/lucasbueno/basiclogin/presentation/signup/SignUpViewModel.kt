@@ -18,7 +18,7 @@ class SignUpViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val authClient: FirebaseAuthClient
 ) : ViewModel() {
-    private val _state = MutableStateFlow<DataState<Boolean>>(DataState.Success(false))
+    private val _state = MutableStateFlow<DataState<Unit>>(DataState.Default)
     val state = _state.asStateFlow()
 
     fun registerUser(
@@ -31,7 +31,7 @@ class SignUpViewModel @Inject constructor(
                     signUpModel = signUpModel
                 )) {
                 is DataState.Success -> {
-                    _state.value = DataState.Success(true)
+                    _state.value = DataState.Success(Unit)
                 }
 
                 is DataState.Error -> {
