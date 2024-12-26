@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 fun PasswordTextField(password: String, onTextChange: (String) -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
 
-    // TODO: Test commit
     OutlinedTextField(
         value = password,
         onValueChange = { newText -> onTextChange(newText) },
