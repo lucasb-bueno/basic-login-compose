@@ -22,9 +22,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.component.DefaultButton
+import com.lucasbueno.basiclogin.component.PasswordTextField
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.login.LogInState
 
@@ -88,13 +88,7 @@ fun ScreenContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation()
-            )
+            PasswordTextField(password = password, onTextChange = { password = it })
 
             if (uiState is DataState.Error) {
                 Box(modifier = Modifier.padding(vertical = 4.dp)) {
