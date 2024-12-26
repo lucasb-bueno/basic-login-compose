@@ -127,7 +127,10 @@ fun SignUpContent(
                 }
             }
 
-            PasswordTextField(password = password, onTextChange = { password = it })
+            PasswordTextField(
+                modifier = Modifier.padding(bottom = 30.dp),
+                password = password,
+                onTextChange = { password = it })
 
             if (signUpState is DataState.Error && signUpState.message.contains(
                     "password",

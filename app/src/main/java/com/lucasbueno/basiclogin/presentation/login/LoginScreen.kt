@@ -88,7 +88,10 @@ fun ScreenContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            PasswordTextField(password = password, onTextChange = { password = it })
+            PasswordTextField(
+                modifier = Modifier.padding(bottom = 4.dp),
+                password = password,
+                onTextChange = { password = it })
 
             if (uiState is DataState.Error) {
                 Box(modifier = Modifier.padding(vertical = 4.dp)) {
