@@ -8,6 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -22,11 +27,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.component.DefaultLoadingScreen
 import com.lucasbueno.basiclogin.component.LoginTopBar
+import com.lucasbueno.basiclogin.component.PasswordTextField
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.SignUpModel
 
@@ -64,6 +71,7 @@ fun SignUpContent(
 ) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     var username by rememberSaveable { mutableStateOf("") }
 
     val focusManager = LocalFocusManager.current
@@ -127,15 +135,26 @@ fun SignUpContent(
                 }
             }
 
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Choose your Password") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 30.dp),
-                visualTransformation = PasswordVisualTransformation()
-            )
+//            OutlinedTextField(
+//                value = password,
+//                onValueChange = { password = it },
+//                label = { Text("Choose your Password") },
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(bottom = 30.dp),
+//                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+//                trailingIcon = {
+//                    val image =
+//                        if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+//                    val description = if (passwordVisible) "Hide password" else "Show password"
+//
+//                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+//                        Icon(imageVector = image, contentDescription = description)
+//                    }
+//                }
+//            )
+
+            PasswordTextField(password = password, onTextChange = { text -> password = text })
 
             if (signUpState is DataState.Error && signUpState.message.contains(
                     "password",
