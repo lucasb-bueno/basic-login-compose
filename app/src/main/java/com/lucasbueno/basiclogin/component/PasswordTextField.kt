@@ -25,7 +25,7 @@ fun PasswordTextField(password: String, onTextChange: (String) -> Unit) {
 
     OutlinedTextField(
         value = password,
-        onValueChange = { onTextChange(password) },
+        onValueChange = { newText -> onTextChange(newText) },
         label = { Text("Choose your Password") },
         modifier = Modifier
             .fillMaxWidth()
