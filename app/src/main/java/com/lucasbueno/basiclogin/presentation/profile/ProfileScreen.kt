@@ -16,11 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.component.DefaultErrorScreen
 import com.lucasbueno.basiclogin.component.DefaultLoadingScreen
 import com.lucasbueno.basiclogin.core.DataState
@@ -60,6 +62,8 @@ fun ProfileScreen(
 
 @Composable
 private fun Content(userData: UserData, onSignOut: () -> Unit) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -90,7 +94,7 @@ private fun Content(userData: UserData, onSignOut: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
         }
         Button(onClick = onSignOut) {
-            Text(text = "Sign out")
+            Text(text = context.getString(R.string.sign_out_button_label))
         }
     }
 }

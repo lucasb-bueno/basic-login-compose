@@ -20,9 +20,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.component.DefaultLoadingScreen
 import com.lucasbueno.basiclogin.component.LoginTopBar
@@ -62,11 +64,12 @@ fun SignUpContent(
     onSignUpClick: (SignUpModel) -> Unit,
     onBackClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
+
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var username by rememberSaveable { mutableStateOf("") }
-
-    val focusManager = LocalFocusManager.current
 
     Scaffold(
         topBar = {
@@ -106,7 +109,7 @@ fun SignUpContent(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Choose your Email") },
+                label = { Text(context.getString(R.string.common_email)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
@@ -148,7 +151,7 @@ fun SignUpContent(
             }
 
             DefaultButton(
-                text = "Create Account",
+                text = context.getString(R.string.create_account_button_label),
                 onClick = {
                     onSignUpClick(
                         SignUpModel(

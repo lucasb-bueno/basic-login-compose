@@ -21,8 +21,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.component.PasswordTextField
 import com.lucasbueno.basiclogin.core.DataState
@@ -57,6 +59,7 @@ fun ScreenContent(
     onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
     onCreateAccountClick: () -> Unit
 ) {
+    val context = LocalContext.current
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
@@ -84,7 +87,7 @@ fun ScreenContent(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text(text = context.getString(R.string.common_email)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -107,7 +110,7 @@ fun ScreenContent(
             DefaultButton(
                 modifier = Modifier.fillMaxWidth(),
                 isLoading = isEmailSignInLoading,
-                text = "Sign in with Email",
+                text = context.getString(R.string.sign_in_with_email_button_label),
                 onClick = {
                     onLoginWithEmailAndPasswordClick(email, password)
                     email = ""
@@ -118,16 +121,19 @@ fun ScreenContent(
             )
 
             DefaultButton(
-                text = "Create an Account",
+                text = context.getString(R.string.create_an_account_button_label),
                 onClick = onCreateAccountClick,
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Text(text = "OR", style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = context.getString(R.string.common_or_label),
+                style = MaterialTheme.typography.bodyLarge
+            )
 
             DefaultButton(
                 isLoading = isGoogleSignInLoading,
-                text = "Sign in with Google",
+                text = context.getString(R.string.sign_in_with_google_button_label),
                 onClick = onLoginWithGoogleClick,
                 modifier = Modifier.fillMaxWidth(),
                 icon = Icons.Default.Android

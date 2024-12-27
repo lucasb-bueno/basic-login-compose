@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Basic Login</string>
     <string name="default_web_client_id">721661275644-gqtn0r2epbf0lbq07nkio5otc6dmbouh.apps.googleusercontent.com</string>
+
+    <string name="sign_in_with_email_button_label">Sign in with Email</string>
+    <string name="sign_in_with_google_button_label">Sign in with Google</string>
+    <string name="create_an_account_button_label">Create an Account</string>
+    <string name="common_or_label">OR</string>
+    <string name="common_password">Password</string>
+    <string name="common_email">Email</string>
+
+    <string name="common_username">Username</string>
+    <string name="chose_your_email_label">Choose your Email</string>
+    <string name="chose_your_password_label">Choose your Password</string>
+    <string name="create_account_button_label">Create Account</string>
+
+    <string name="sign_out_button_label">Sign out</string>
 </resources>
