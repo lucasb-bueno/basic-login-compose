@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -97,4 +98,26 @@ private fun Content(userData: UserData, onSignOut: () -> Unit) {
             Text(text = context.getString(R.string.sign_out_button_label))
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ProfileScreenPreview() {
+    ProfileScreen(
+        profileState = DataState.Success(
+            ProfileState(
+                userData = UserData(
+                    userId = "123456789",
+                    email = "test@gmail.com",
+                    userName = "test user",
+                    profilePictureUrl = null
+                ),
+                shouldLogOut = false
+            )
+        ),
+        onRetryClick = {},
+        onLogoutClick = {},
+        onLogoutSuccess = {},
+        onSignOutClick = {}
+    )
 }

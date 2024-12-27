@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.component.DefaultButton
@@ -180,4 +181,15 @@ fun SignUpContent(
             }
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun SignUpScreenPreview() {
+    SignUpScreen(
+        signUpState = DataState.Success(Unit),
+        onBackClick = {},
+        onSignUpClick = { _ -> },
+        onSuccessRegister = {}
+    )
 }
