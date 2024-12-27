@@ -8,4 +8,5 @@ interface AuthProvider {
     suspend fun isUserLoggedIn(): Boolean
     suspend fun getLoggedInUserId(): Result<String>
     suspend fun getSignedInUser(): Result<FirebaseUser>
+    suspend fun sendPasswordResetEmail(email: String): Result<Unit>
 }

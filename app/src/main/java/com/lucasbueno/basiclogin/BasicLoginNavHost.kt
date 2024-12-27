@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lucasbueno.basiclogin.presentation.forgotpassword.ForgotPasswordRoute
+import com.lucasbueno.basiclogin.presentation.forgotpassword.forgotPasswordRoute
 import com.lucasbueno.basiclogin.presentation.login.SignInRoute
 import com.lucasbueno.basiclogin.presentation.login.loginRoute
 import com.lucasbueno.basiclogin.presentation.profile.ProfileScreenRoute
@@ -22,6 +24,9 @@ fun BasicLoginNavHost() {
                 },
                 onNavigateToSignUpScreen = {
                     navController.navigate(signUpRoute)
+                },
+                onNavigateToForgotPasswordScreen = {
+                    navController.navigate(forgotPasswordRoute)
                 }
             )
         }
@@ -39,6 +44,11 @@ fun BasicLoginNavHost() {
             SignUpRoute(
                 onSignUpSuccess = { navController.navigate(profileScreenRoute) },
                 onBackClick = { navController.navigateUp() }
+            )
+        }
+        composable(forgotPasswordRoute) {
+            ForgotPasswordRoute(
+                navigateToLogin = { navController.navigateUp() }
             )
         }
     }

@@ -8,4 +8,5 @@ interface UserRepository {
     suspend fun getUser(userId: String): Result<UserData>
     suspend fun getUserId(): Result<String>
     suspend fun getSignedInUser(): Result<FirebaseUser>
+    suspend fun sendPasswordResetEmail(email: String): Result<Unit>
 }

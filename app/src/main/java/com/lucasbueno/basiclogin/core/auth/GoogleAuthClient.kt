@@ -70,6 +70,10 @@ class GoogleAuthUiClient(
         } ?: Result.failure(exception = Throwable(message = "No current user Logged in"))
     }
 
+    override suspend fun sendPasswordResetEmail(email: String): Result<Unit> {
+        return Result.failure(exception = Throwable(message = "Google does not support resetting password"))
+    }
+
     override suspend fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
     }

@@ -33,4 +33,8 @@ class UserRepositoryImpl(
     override suspend fun getUserId(): Result<String> = authProvider.getLoggedInUserId()
 
     override suspend fun getSignedInUser(): Result<FirebaseUser> = authProvider.getSignedInUser()
+
+    override suspend fun sendPasswordResetEmail(email: String): Result<Unit> {
+        return authProvider.sendPasswordResetEmail(email)
+    }
 }

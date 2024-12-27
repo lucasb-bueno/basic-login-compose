@@ -38,6 +38,7 @@ fun DefaultButton(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
+        enabled = !isLoading,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White
         ),

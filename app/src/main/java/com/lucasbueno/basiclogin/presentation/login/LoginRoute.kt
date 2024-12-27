@@ -17,6 +17,7 @@ const val loginRoute = "loginRoute"
 fun SignInRoute(
     onNavigateToProfileScreen: () -> Unit,
     onNavigateToSignUpScreen: () -> Unit,
+    onNavigateToForgotPasswordScreen: () -> Unit
 ) {
     val viewModel: LoginViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -50,6 +51,7 @@ fun SignInRoute(
         onSuccessLogin = {
             onNavigateToProfileScreen()
             viewModel.resetLoginState()
-        }
+        },
+        onForgotPasswordButtonClick = onNavigateToForgotPasswordScreen
     )
 }

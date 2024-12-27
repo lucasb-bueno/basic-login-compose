@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,6 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.component.DefaultButton
@@ -36,7 +40,8 @@ fun LoginScreen(
     onLoginWithGoogleClick: () -> Unit,
     onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
     onCreateAccountClick: () -> Unit,
-    onSuccessLogin: () -> Unit
+    onForgotPasswordButtonClick: () -> Unit,
+    onSuccessLogin: () -> Unit,
 ) {
     LaunchedEffect(state) {
         if (state is DataState.Success && state.data?.isLoginSuccess == true) {
@@ -48,7 +53,8 @@ fun LoginScreen(
         uiState = state,
         onLoginWithGoogleClick = onLoginWithGoogleClick,
         onLoginWithEmailAndPasswordClick = onLoginWithEmailAndPasswordClick,
-        onCreateAccountClick = onCreateAccountClick
+        onCreateAccountClick = onCreateAccountClick,
+        onForgotPasswordButtonClick = onForgotPasswordButtonClick
     )
 }
 
@@ -57,6 +63,7 @@ fun ScreenContent(
     uiState: DataState<LogInState>,
     onLoginWithGoogleClick: () -> Unit,
     onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
+    onForgotPasswordButtonClick: () -> Unit,
     onCreateAccountClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -135,9 +142,36 @@ fun ScreenContent(
                 isLoading = isGoogleSignInLoading,
                 text = context.getString(R.string.sign_in_with_google_button_label),
                 onClick = onLoginWithGoogleClick,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth(),
                 icon = Icons.Default.Android
             )
+
+            TextButton(onClick = onForgotPasswordButtonClick) {
+                Text(
+                    text = "Forgot Password?",
+                    style = TextStyle(textDecoration = TextDecoration.Underline)
+                )
+            }
         }
     }
+}
+
+@Preview(showBackground = true, widthDp = 360, heightDp = 720)
+@Composable
+fun LoginScreenPreview() {
+    LoginScreen(
+        state = DataState.Success(
+            LogInState(
+                isLoginSuccess = false,
+                emailSignInLoading = false,
+                googleSignInLoading = false
+            )
+        ),
+        onLoginWithGoogleClick = {},
+        onLoginWithEmailAndPasswordClick = { _, _ -> },
+        onCreateAccountClick = {},
+        onForgotPasswordButtonClick = {},
+        onSuccessLogin = {}
+    )
 }

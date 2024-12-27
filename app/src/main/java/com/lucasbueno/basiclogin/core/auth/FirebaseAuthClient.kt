@@ -54,6 +54,15 @@ class FirebaseAuthClient : AuthProvider {
         } ?: Result.failure(exception = Throwable(message = "No current user Logged in"))
     }
 
+    override suspend fun sendPasswordResetEmail(email: String): Result<Unit> {
+        return try {
+            auth.sendPasswordResetEmail(email).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(exception = Throwable(message = e.localizedMessage))
+        }
+    }
+
     suspend fun registerUser(
         email: String,
         password: String
