@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -85,11 +84,10 @@ fun ScreenContent(
         uiState is DataState.Success && uiState.data?.emailSignInLoading == true
     val isGoogleSignInLoading =
         uiState is DataState.Success && uiState.data?.googleSignInLoading == true
-    var showError by remember { mutableStateOf(uiState is DataState.Error) }
+    var showError by remember { mutableStateOf(false) }
 
 
     LaunchedEffect(uiState) {
-        showError = uiState is DataState.Error
         if (uiState is DataState.Success && uiState.data?.isLoginSuccess == true) {
             onSuccessLogin()
             focusManager.clearFocus()
@@ -121,10 +119,12 @@ fun ScreenContent(
         )
 
         OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp),
             value = email,
             onValueChange = { email = it },
             label = { Text(text = context.getString(R.string.common_email)) },
-            modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Next
             ),
@@ -149,7 +149,6 @@ fun ScreenContent(
             onClick = onForgotPasswordButtonClick
         ) {
             Text(
-                textAlign = TextAlign.End,
                 text = context.getString(R.string.forgot_password_label),
                 style = TextStyle(textDecoration = TextDecoration.Underline)
             )
@@ -163,7 +162,9 @@ fun ScreenContent(
         }
 
         DefaultButton(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp),
             isLoading = isEmailSignInLoading,
             text = context.getString(R.string.sign_in_with_email_button_label),
             onClick = {
@@ -180,6 +181,7 @@ fun ScreenContent(
         )
 
         Text(
+            modifier = Modifier.padding(vertical = 4.dp),
             text = context.getString(R.string.common_or_label),
             style = MaterialTheme.typography.bodyLarge
         )
