@@ -75,10 +75,11 @@ fun ScreenContent(
     onSuccessLogin: () -> Unit,
 ) {
     val context = LocalContext.current
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
 
     val isEmailSignInLoading =
         uiState is DataState.Success && uiState.data?.emailSignInLoading == true
