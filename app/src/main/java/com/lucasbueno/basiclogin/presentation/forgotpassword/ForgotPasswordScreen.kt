@@ -1,5 +1,7 @@
 package com.lucasbueno.basiclogin.presentation.forgotpassword
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.component.DefaultButton
@@ -31,6 +34,7 @@ fun ForgotPasswordScreen(
     onPasswordResetSent: (String) -> Unit,
     onBackClick: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     var email by remember { mutableStateOf("") }
 
     Scaffold(
@@ -42,7 +46,13 @@ fun ForgotPasswordScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(contentPadding)
-                .padding(24.dp),
+                .padding(24.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) {
+                    focusManager.clearFocus()
+                },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -66,6 +76,7 @@ fun ForgotPasswordScreen(
                 isLoading = state is DataState.Loading,
                 onClick = {
                     onPasswordResetSent(email)
+                    focusManager.clearFocus()
                 },
                 text = "Send Reset Link",
                 modifier = Modifier

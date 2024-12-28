@@ -8,6 +8,7 @@
     <string name="common_or_label">OR</string>
     <string name="common_password">Password</string>
     <string name="common_email">Email</string>
+    <string name="forgot_password_label">Forgot Password?</string>
 
     <string name="common_username">Username</string>
     <string name="chose_your_email_label">Choose your Email</string>

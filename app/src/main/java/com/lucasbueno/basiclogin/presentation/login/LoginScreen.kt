@@ -76,7 +76,7 @@ fun ScreenContent(
     val isGoogleSignInLoading =
         uiState is DataState.Success && uiState.data?.googleSignInLoading == true
 
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
@@ -86,83 +86,83 @@ fun ScreenContent(
             ) {
                 focusManager.clearFocus()
             },
-        contentAlignment = Alignment.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+        Text(
+            text = "Welcome to the Login App",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(16.dp)
+        )
+
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text(text = context.getString(R.string.common_email)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        PasswordTextField(
+            modifier = Modifier.padding(bottom = 4.dp),
+            password = password,
+            onTextChange = { password = it })
+
+        TextButton(
+            modifier = Modifier.align(alignment = Alignment.End),
+            onClick = onForgotPasswordButtonClick
         ) {
             Text(
-                text = "Welcome to the Login App",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(16.dp)
+                textAlign = TextAlign.End,
+                text = context.getString(R.string.forgot_password_label),
+                style = TextStyle(textDecoration = TextDecoration.Underline)
             )
+        }
 
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text(text = context.getString(R.string.common_email)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            PasswordTextField(
-                modifier = Modifier.padding(bottom = 4.dp),
-                password = password,
-                onTextChange = { password = it })
-
-            if (uiState is DataState.Error) {
-                Box(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text(
-                        text = uiState.message,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 8.dp, top = 4.dp)
-                    )
-                }
-            }
-
-            DefaultButton(
-                modifier = Modifier.fillMaxWidth(),
-                isLoading = isEmailSignInLoading,
-                text = context.getString(R.string.sign_in_with_email_button_label),
-                onClick = {
-                    onLoginWithEmailAndPasswordClick(email, password)
-                    email = ""
-                    password = ""
-                    focusManager.clearFocus()
-                },
-                icon = Icons.Default.Email
-            )
-
-            DefaultButton(
-                text = context.getString(R.string.create_an_account_button_label),
-                onClick = onCreateAccountClick,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Text(
-                text = context.getString(R.string.common_or_label),
-                style = MaterialTheme.typography.bodyLarge
-            )
-
-            DefaultButton(
-                isLoading = isGoogleSignInLoading,
-                text = context.getString(R.string.sign_in_with_google_button_label),
-                onClick = onLoginWithGoogleClick,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                icon = Icons.Default.Android
-            )
-
-            TextButton(onClick = onForgotPasswordButtonClick) {
+        if (uiState is DataState.Error) {
+            Box(modifier = Modifier.padding(vertical = 4.dp)) {
                 Text(
-                    text = "Forgot Password?",
-                    style = TextStyle(textDecoration = TextDecoration.Underline)
+                    text = uiState.message,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(start = 8.dp, top = 4.dp)
                 )
             }
         }
+
+        DefaultButton(
+            modifier = Modifier.fillMaxWidth(),
+            isLoading = isEmailSignInLoading,
+            text = context.getString(R.string.sign_in_with_email_button_label),
+            onClick = {
+                onLoginWithEmailAndPasswordClick(email, password)
+                email = ""
+                password = ""
+                focusManager.clearFocus()
+            },
+            icon = Icons.Default.Email
+        )
+
+        DefaultButton(
+            text = context.getString(R.string.create_an_account_button_label),
+            onClick = onCreateAccountClick,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Text(
+            text = context.getString(R.string.common_or_label),
+            style = MaterialTheme.typography.bodyLarge
+        )
+
+        DefaultButton(
+            isLoading = isGoogleSignInLoading,
+            text = context.getString(R.string.sign_in_with_google_button_label),
+            onClick = onLoginWithGoogleClick,
+            modifier = Modifier
+                .fillMaxWidth(),
+            icon = Icons.Default.Android
+        )
     }
 }
 

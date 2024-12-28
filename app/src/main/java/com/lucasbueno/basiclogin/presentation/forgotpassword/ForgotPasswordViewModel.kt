@@ -34,7 +34,6 @@ class ForgotPasswordViewModel @Inject constructor(
                     }
                 }
             )
-
         }
     }
 }
