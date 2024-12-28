@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.component
+package com.lucasbueno.basiclogin.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions

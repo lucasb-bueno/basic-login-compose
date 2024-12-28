@@ -24,8 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.lucasbueno.basiclogin.component.DefaultButton
-import com.lucasbueno.basiclogin.component.LoginTopBar
+import com.lucasbueno.basiclogin.components.DefaultButton
+import com.lucasbueno.basiclogin.components.LoginTopBar
 import com.lucasbueno.basiclogin.core.DataState
 
 @Composable

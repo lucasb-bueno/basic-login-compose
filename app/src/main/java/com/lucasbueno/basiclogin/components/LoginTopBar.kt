@@ -1,4 +1,4 @@
-package com.lucasbueno.basiclogin.component
+package com.lucasbueno.basiclogin.components
 
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons

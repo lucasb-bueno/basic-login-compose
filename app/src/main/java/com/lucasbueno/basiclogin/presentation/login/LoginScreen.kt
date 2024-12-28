@@ -40,9 +40,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.R
-import com.lucasbueno.basiclogin.component.DefaultButton
-import com.lucasbueno.basiclogin.component.ErrorContainer
-import com.lucasbueno.basiclogin.component.PasswordTextField
+import com.lucasbueno.basiclogin.components.DefaultButton
+import com.lucasbueno.basiclogin.components.ErrorContainer
+import com.lucasbueno.basiclogin.components.PasswordTextField
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.login.LogInState
 

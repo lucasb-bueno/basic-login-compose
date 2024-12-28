@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.lucasbueno.basiclogin.R
-import com.lucasbueno.basiclogin.component.DefaultErrorScreen
-import com.lucasbueno.basiclogin.component.DefaultLoadingScreen
+import com.lucasbueno.basiclogin.components.DefaultErrorScreen
+import com.lucasbueno.basiclogin.components.DefaultLoadingScreen
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.domain.model.UserData
 
