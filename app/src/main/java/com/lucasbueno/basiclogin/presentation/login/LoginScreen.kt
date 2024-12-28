@@ -2,11 +2,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Email
@@ -23,17 +25,23 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.component.DefaultButton
+import com.lucasbueno.basiclogin.component.ErrorContainer
 import com.lucasbueno.basiclogin.component.PasswordTextField
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.login.LogInState
@@ -47,18 +55,13 @@ fun LoginScreen(
     onForgotPasswordButtonClick: () -> Unit,
     onSuccessLogin: () -> Unit,
 ) {
-    LaunchedEffect(state) {
-        if (state is DataState.Success && state.data?.isLoginSuccess == true) {
-            onSuccessLogin()
-        }
-    }
-
     ScreenContent(
         uiState = state,
         onLoginWithGoogleClick = onLoginWithGoogleClick,
         onLoginWithEmailAndPasswordClick = onLoginWithEmailAndPasswordClick,
         onCreateAccountClick = onCreateAccountClick,
-        onForgotPasswordButtonClick = onForgotPasswordButtonClick
+        onForgotPasswordButtonClick = onForgotPasswordButtonClick,
+        onSuccessLogin = onSuccessLogin
     )
 }
 
@@ -68,17 +71,32 @@ fun ScreenContent(
     onLoginWithGoogleClick: () -> Unit,
     onLoginWithEmailAndPasswordClick: (String, String) -> Unit,
     onForgotPasswordButtonClick: () -> Unit,
-    onCreateAccountClick: () -> Unit
+    onCreateAccountClick: () -> Unit,
+    onSuccessLogin: () -> Unit,
 ) {
     val context = LocalContext.current
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val isEmailSignInLoading =
         uiState is DataState.Success && uiState.data?.emailSignInLoading == true
     val isGoogleSignInLoading =
         uiState is DataState.Success && uiState.data?.googleSignInLoading == true
+    var showError by remember { mutableStateOf(uiState is DataState.Error) }
 
+
+    LaunchedEffect(uiState) {
+        showError = uiState is DataState.Error
+        if (uiState is DataState.Success && uiState.data?.isLoginSuccess == true) {
+            onSuccessLogin()
+            focusManager.clearFocus()
+            email = ""
+            password = ""
+            onSuccessLogin()
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,7 +113,9 @@ fun ScreenContent(
         Image(
             painter = painterResource(id = R.drawable.login_app_logo),
             contentDescription = "Login App Logo",
-            modifier = Modifier.fillMaxWidth(0.8f),
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .aspectRatio(1f),
             contentScale = ContentScale.Fit
         )
 
@@ -103,13 +123,25 @@ fun ScreenContent(
             value = email,
             onValueChange = { email = it },
             label = { Text(text = context.getString(R.string.common_email)) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            ),
+            keyboardActions = KeyboardActions(
+                onNext = { focusManager.moveFocus(FocusDirection.Down) }
+            )
         )
 
         PasswordTextField(
             modifier = Modifier.padding(bottom = 4.dp),
             password = password,
-            onTextChange = { password = it })
+            onTextChange = { password = it },
+            keyboardController = keyboardController,
+            onImeAction = {
+                showError = uiState is DataState.Error
+                onLoginWithEmailAndPasswordClick(email, password)
+            }
+        )
 
         TextButton(
             modifier = Modifier.align(alignment = Alignment.End),
@@ -122,15 +154,11 @@ fun ScreenContent(
             )
         }
 
-        if (uiState is DataState.Error) {
-            Box(modifier = Modifier.padding(vertical = 4.dp)) {
-                Text(
-                    text = uiState.message,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(start = 8.dp, top = 4.dp)
-                )
-            }
+        if (showError && uiState is DataState.Error) {
+            ErrorContainer(
+                message = uiState.message,
+                onDismiss = { showError = false }
+            )
         }
 
         DefaultButton(
@@ -138,10 +166,8 @@ fun ScreenContent(
             isLoading = isEmailSignInLoading,
             text = context.getString(R.string.sign_in_with_email_button_label),
             onClick = {
+                showError = uiState is DataState.Error
                 onLoginWithEmailAndPasswordClick(email, password)
-                email = ""
-                password = ""
-                focusManager.clearFocus()
             },
             icon = Icons.Default.Email
         )
@@ -168,9 +194,24 @@ fun ScreenContent(
     }
 }
 
-@Preview(showBackground = true, widthDp = 360, heightDp = 720)
+class LoginScreenPreviewProvider : PreviewParameterProvider<DataState<LogInState>> {
+    override val values = sequenceOf(
+        DataState.Success(
+            LogInState(
+                isLoginSuccess = false,
+                emailSignInLoading = true,
+                googleSignInLoading = false
+            )
+        ),
+        DataState.Error(message = "Invalid credentials")
+    )
+}
+
+@Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
+fun LoginScreenPreview(
+    @PreviewParameter(LoginScreenPreviewProvider::class) state: DataState<LogInState>
+) {
     LoginScreen(
         state = DataState.Success(
             LogInState(

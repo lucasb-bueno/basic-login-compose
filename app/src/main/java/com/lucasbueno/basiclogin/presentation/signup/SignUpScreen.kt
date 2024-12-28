@@ -3,12 +3,10 @@ package com.lucasbueno.basiclogin.presentation.signup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,12 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.lucasbueno.basiclogin.R
 import com.lucasbueno.basiclogin.component.DefaultButton
 import com.lucasbueno.basiclogin.component.DefaultLoadingScreen
+import com.lucasbueno.basiclogin.component.ErrorContainer
 import com.lucasbueno.basiclogin.component.LoginTopBar
 import com.lucasbueno.basiclogin.component.PasswordTextField
 import com.lucasbueno.basiclogin.core.DataState
@@ -67,10 +67,23 @@ fun SignUpContent(
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var username by rememberSaveable { mutableStateOf("") }
+
+    var showError by remember { mutableStateOf(signUpState is DataState.Error) }
+
+    val model = SignUpModel(
+        email = email.trim(),
+        password = password.trim(),
+        userName = username.trim()
+    )
+
+    LaunchedEffect(signUpState) {
+        showError = signUpState is DataState.Error
+    }
 
     Scaffold(
         topBar = {
@@ -116,68 +129,30 @@ fun SignUpContent(
                     .padding(bottom = 8.dp)
             )
 
-            if (signUpState is DataState.Error && signUpState.message.contains(
-                    "email",
-                    ignoreCase = true
-                )
-            ) {
-                Box(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text(
-                        text = signUpState.message,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 8.dp, top = 4.dp)
-                    )
-                }
-            }
-
             PasswordTextField(
                 modifier = Modifier.padding(bottom = 30.dp),
                 password = password,
-                onTextChange = { password = it })
-
-            if (signUpState is DataState.Error && signUpState.message.contains(
-                    "password",
-                    ignoreCase = true
-                )
-            ) {
-                Box(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text(
-                        text = signUpState.message,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 8.dp, top = 4.dp)
-                    )
-                }
-            }
+                onTextChange = { password = it },
+                keyboardController = keyboardController,
+                onImeAction = { onSignUpClick(model) }
+            )
 
             DefaultButton(
                 text = context.getString(R.string.create_account_button_label),
                 onClick = {
-                    onSignUpClick(
-                        SignUpModel(
-                            email = email.trim(),
-                            password = password.trim(),
-                            userName = username.trim()
-                        )
-                    )
+                    showError = signUpState is DataState.Error
+                    onSignUpClick(model)
                 },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (signUpState is DataState.Error && !signUpState.message.contains(
-                    "email",
-                    ignoreCase = true
-                ) && !signUpState.message.contains("password", ignoreCase = true)
-            ) {
-                Box(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text(
-                        text = signUpState.message,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
+            if (signUpState is DataState.Error && showError) {
+                ErrorContainer(
+                    message = signUpState.message,
+                    onDismiss = {
+                        showError = false
+                    }
+                )
             }
         }
     }
