@@ -38,7 +38,7 @@ fun DefaultButton(
             .fillMaxWidth(),
         enabled = !isLoading,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = MaterialTheme.colorScheme.primary
         ),
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(1.dp, Color.Gray),
