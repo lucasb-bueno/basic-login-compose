@@ -89,8 +89,12 @@ fun ScreenContent(
         uiState is DataState.Success && uiState.data?.googleSignInLoading == true
     var showError by remember { mutableStateOf(false) }
 
+    fun checkErrorState() {
+        showError = uiState is DataState.Error
+    }
 
     LaunchedEffect(uiState) {
+        checkErrorState()
         if (uiState is DataState.Success && uiState.data?.isLoginSuccess == true) {
             onSuccessLogin()
             focusManager.clearFocus()
@@ -154,8 +158,8 @@ fun ScreenContent(
                 onTextChange = { password = it },
                 keyboardController = keyboardController,
                 onImeAction = {
-                    showError = uiState is DataState.Error
                     onLoginWithEmailAndPasswordClick(email, password)
+                    checkErrorState()
                 }
             )
 
@@ -183,8 +187,8 @@ fun ScreenContent(
                 isLoading = isEmailSignInLoading,
                 text = context.getString(R.string.sign_in_with_email_button_label),
                 onClick = {
-                    showError = uiState is DataState.Error
                     onLoginWithEmailAndPasswordClick(email, password)
+                    checkErrorState()
                 },
                 icon = Icons.Default.Email
             )
@@ -204,7 +208,10 @@ fun ScreenContent(
             DefaultButton(
                 isLoading = isGoogleSignInLoading,
                 text = context.getString(R.string.sign_in_with_google_button_label),
-                onClick = onLoginWithGoogleClick,
+                onClick = {
+                    onLoginWithGoogleClick()
+                    checkErrorState()
+                },
                 modifier = Modifier
                     .fillMaxWidth(),
                 icon = Icons.Default.Android

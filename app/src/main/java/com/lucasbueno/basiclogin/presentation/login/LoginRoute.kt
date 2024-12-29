@@ -47,11 +47,17 @@ fun SignInRoute(
         onLoginWithEmailAndPasswordClick = { email, password ->
             viewModel.loginWithEmailAndPassword(email, password)
         },
-        onCreateAccountClick = onNavigateToSignUpScreen,
+        onCreateAccountClick = {
+            onNavigateToSignUpScreen()
+            viewModel.resetLoginState()
+        },
         onSuccessLogin = {
             onNavigateToProfileScreen()
             viewModel.resetLoginState()
         },
-        onForgotPasswordButtonClick = onNavigateToForgotPasswordScreen
+        onForgotPasswordButtonClick = {
+            onNavigateToForgotPasswordScreen()
+            viewModel.resetLoginState()
+        }
     )
 }
