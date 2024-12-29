@@ -9,7 +9,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.lucasbueno.basiclogin.R
+import com.lucasbueno.basiclogin.Constants
 import com.lucasbueno.basiclogin.core.AuthProvider
 import com.lucasbueno.basiclogin.core.DataState
 import com.lucasbueno.basiclogin.presentation.profile.ProfileState
@@ -94,7 +94,7 @@ class GoogleAuthUiClient(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                     .setSupported(true)
                     .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId(context.getString(R.string.default_web_client_id))
+                    .setServerClientId(Constants.WEB_CLIENT_ID)
                     .build()
             )
             .setAutoSelectEnabled(true)

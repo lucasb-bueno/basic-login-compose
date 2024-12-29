@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Basic Login</string>
-    <string name="default_web_client_id">721661275644-gqtn0r2epbf0lbq07nkio5otc6dmbouh.apps.googleusercontent.com</string>
 
     <string name="sign_in_with_email_button_label">Sign in with Email</string>
     <string name="sign_in_with_google_button_label">Sign in with Google</string>
