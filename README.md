@@ -36,7 +36,7 @@ This project is a foundation for adding login features into other applications, 
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - For building modern UI.
 - [Firebase Authentication](https://firebase.google.com/products/auth) - For handling user login and registration.
 - [Google Sign-In](https://developers.google.com/identity/sign-in/android) - For simple and seamless user authentication.
-- [Hilt](https://developer.android.com/training/dependency-injection/hilt) - For dependency injection.
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) - For dependency injection.
 - [FireStore](https://firebase.google.com/products/firestore) - For database and user data management.
 
 ### Future Integrations:
@@ -48,7 +48,7 @@ This project is a foundation for adding login features into other applications, 
 
 The app is built using **Clean Architecture**, ensuring a modular and maintainable structure:
 - **Presentation Layer**: Built with Jetpack Compose, including state management.
-- **Domain Layer**: Encapsulates business logic and use cases.
+- **Domain Layer**: Encapsulates business logic.
 - **Data Layer**: Handles interactions with Firebase Authentication and FireStore.
 
 ---
@@ -58,3 +58,7 @@ The app is built using **Clean Architecture**, ensuring a modular and maintainab
 1. Clone this repository:
    ```bash
    git clone https://github.com/lucasb-bueno/basic-login-compose.git
+
+   - Add your google-services.json file into app folder
+   - Create your Constant.kt file and add your variables
+
