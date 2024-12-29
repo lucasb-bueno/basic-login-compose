@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 // Primary Colors (Shades of Blue)
 val BlueLight = Color(0xFFBBDEFB)  // Light Blue
 val Blue = Color(0xFF2196F3)       // Primary Blue
-val BlueDark = Color(0xFF1976D2)   // Dark Blue
+val BlueDark = Color(0xFF2679D2)   // Dark Blue
 
 // Secondary Colors (Shades of Orange)
 val OrangeLight = Color(0xFFFFE0B2) // Light Orange

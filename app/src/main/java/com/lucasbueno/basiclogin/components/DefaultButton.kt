@@ -38,7 +38,7 @@ fun DefaultButton(
             .fillMaxWidth(),
         enabled = !isLoading,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         shape = RoundedCornerShape(15.dp),
         border = BorderStroke(1.dp, Color.Gray),
@@ -56,12 +56,13 @@ fun DefaultButton(
                         imageVector = icon,
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = Color.Black
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                 }
                 Text(
                     text = text,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = MaterialTheme.typography.bodyMedium.copy(color = Color.Black)
                 )
             }
