@@ -1,12 +1,15 @@
 package com.lucasbueno.basiclogin.presentation.signup
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -86,73 +90,88 @@ fun SignUpContent(
     }
 
     Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
         topBar = {
             LoginTopBar(onBackClick = onBackClick)
-        }
+        },
     ) { contentPadding ->
-        Column(
-            modifier = modifier
+        Box(
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(contentPadding)
-                .padding(horizontal = 16.dp)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                            MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f)
+                        )
+                    )
+                )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
                 ) {
                     focusManager.clearFocus()
-                },
-            verticalArrangement = Arrangement.Center
+                }
         ) {
-            Text(
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(bottom = 20.dp)
-                    .fillMaxWidth(),
-                text = if (username.isNotEmpty()) "Welcome, $username!" else ""
-            )
-
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Username") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            )
-
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text(context.getString(R.string.common_email)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp)
-            )
-
-            PasswordTextField(
-                modifier = Modifier.padding(bottom = 30.dp),
-                password = password,
-                onTextChange = { password = it },
-                keyboardController = keyboardController,
-                onImeAction = { onSignUpClick(model) }
-            )
-
-            DefaultButton(
-                text = context.getString(R.string.create_account_button_label),
-                onClick = {
-                    showError = signUpState is DataState.Error
-                    onSignUpClick(model)
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            if (signUpState is DataState.Error && showError) {
-                ErrorContainer(
-                    message = signUpState.message,
-                    onDismiss = {
-                        showError = false
-                    }
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(bottom = 20.dp)
+                        .fillMaxWidth(),
+                    text = if (username.isNotEmpty()) "Welcome, $username!" else ""
                 )
+
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("Username") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                )
+
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text(context.getString(R.string.common_email)) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
+                )
+
+                PasswordTextField(
+                    modifier = Modifier.padding(bottom = 30.dp),
+                    password = password,
+                    onTextChange = { password = it },
+                    keyboardController = keyboardController,
+                    onImeAction = { onSignUpClick(model) }
+                )
+
+                DefaultButton(
+                    text = context.getString(R.string.create_account_button_label),
+                    onClick = {
+                        showError = signUpState is DataState.Error
+                        onSignUpClick(model)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                if (signUpState is DataState.Error && showError) {
+                    ErrorContainer(
+                        message = signUpState.message,
+                        onDismiss = {
+                            showError = false
+                        }
+                    )
+                }
             }
         }
     }
